@@ -1,5 +1,7 @@
+import jsonschema
 from django.http import HttpResponse, HttpResponseBadRequest
 from functools import wraps
+
 
 try:
 	import simplejson as json
@@ -24,7 +26,7 @@ def from_json(obj):
 		return None
 
 
-def parse_request(method):
+def parse_request(method, schema=None):
 	def outer(func):
 		@wraps(func)
 		def inner(request, *args, **kwargs):
@@ -35,6 +37,11 @@ def parse_request(method):
 				data = to_json(data)
 				if data is None:
 					return HttpResponseBadRequest()
+				if schema:
+					try:
+						jsonschema.validate(data, schema)
+					except jsonschema.ValidationError:
+						return HttpResponseBadRequest()
 
 			err, reply = func(request, data, *args, **kwargs)
 

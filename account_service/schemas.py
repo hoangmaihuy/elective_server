@@ -1,8 +1,10 @@
 
-PING_SCHEMA = {
+ECHO_SCHEMA = {
 	"type": "object",
 	"properties": {
-		"message": "string",
+		"message": {
+			"type": "string"
+		}
 	},
 	"required": ["message"]
 }
