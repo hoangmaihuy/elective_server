@@ -1,4 +1,4 @@
-name: Django CI
+name: Build
 
 on:
   push:
@@ -31,3 +31,11 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+    - name: Deploy Heroku
+      if: success()
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "whispering-sierra-87180"
+        heroku_email: "pynhp9x@gmail.com"
+        usedocker: true
