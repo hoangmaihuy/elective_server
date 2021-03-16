@@ -35,10 +35,6 @@ elif ENVIROMENT == "LIVE":
     DEBUG = False
     HOST = "https://elective-api.herokuapp.com"
 
-print(ENVIROMENT)
-print(HOST)
-
-
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', HOST]
 
 
