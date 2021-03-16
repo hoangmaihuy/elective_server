@@ -28,14 +28,15 @@ ENVIROMENT = os.environ.get('ENVIRONMENT', default="DEV")
 if ENVIROMENT == "DEV":
     DEBUG = True
     HOST = "http://localhost:8000"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 elif ENVIROMENT == "TEST":
     DEBUG = True
     HOST = "https://elective-api-test.herokuapp.com"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "elective-api-test.herokuapp.com"]
 elif ENVIROMENT == "LIVE":
     DEBUG = False
     HOST = "https://elective-api.herokuapp.com"
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', HOST]
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "elective-api.herokuapp.com"]
 
 
 # Application definition
