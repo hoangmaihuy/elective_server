@@ -1,5 +1,7 @@
 import jsonschema
+import requests
 from django.http import HttpResponse, HttpResponseBadRequest
+from common.consts import ErrorCode
 from functools import wraps
 
 
@@ -53,3 +55,18 @@ def parse_request(method, schema=None):
 		return inner
 
 	return outer
+
+
+# return error, reply
+def request_api(url, method="POST", headers=None, data=None):
+	if method == "GET":
+		r = requests.get(url, headers=headers, params=data)
+	elif method == "POST":
+		r = requests.post(url, headers=headers, json=data)
+	else:
+		return ErrorCode.ERR_NOT_SUPPORTED, None
+
+	if r.status_code != 200:
+		return r.status_code, None
+	resp_data = r.json()
+	return resp_data["error"], resp_data["reply"]

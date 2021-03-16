@@ -1,6 +1,6 @@
 from common.utils import parse_request
-from account_service.schemas import *
-from account_service.consts import *
+from test_service.schemas import *
+from common.consts import ErrorCode
 
 
 

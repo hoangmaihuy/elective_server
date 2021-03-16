@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'pku_elective.urls'
+ROOT_URLCONF = 'elective_server.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pku_elective.wsgi.application'
+WSGI_APPLICATION = 'elective_server.wsgi.application'
 
 
 # Database
