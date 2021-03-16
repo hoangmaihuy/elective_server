@@ -29,6 +29,8 @@ jobs:
         heroku_app_name: "elective-api"
         heroku_email: "pynhp9x@gmail.com"
         usedocker: true
+      env:
+        ENVIRONMENT: LIVE
     - name: Run Tests
       env:
         ENVIRONMENT: LIVE
