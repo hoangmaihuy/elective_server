@@ -23,16 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', default='j!i@i+y&bm$23p2v#hss(gv@i=q6x1wusc3gzocodr+*_#_^l@')
 
-ENVIROMENT = os.environ.get('ENV', default="TEST")
+ENVIROMENT = os.environ.get('ENVIRONMENT', default="DEV")
 
-if ENVIROMENT == "TEST":
+if ENVIROMENT == "DEV":
     DEBUG = True
     HOST = "http://localhost:8000"
-elif ENVIROMENT == "STAGING":
+elif ENVIROMENT == "TEST":
+    DEBUG = True
+    HOST = "https://elective-api-web.herokuapp.com"
+elif ENVIROMENT == "LIVE":
     DEBUG = False
-    HOST = "https://whispering-sierra-87180.herokuapp.com"
+    HOST = "https://elective-api.herokuapp.com"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'whispering-sierra-87180.herokuapp.com']
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', HOST]
 
 
 # Application definition

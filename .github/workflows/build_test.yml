@@ -1,0 +1,36 @@
+name: Build Test
+
+on:
+  push:
+    branches: [ test ]
+  pull_request:
+    branches: [ test ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests django
+    - name: Deploy Heroku
+      if: success()
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "elective-api-test"
+        heroku_email: "pynhp9x@gmail.com"
+        usedocker: true
+    - name: Run Tests
+      env:
+        ENVIRONMENT: TEST
+      run: |
+        python manage.py test
