@@ -1,1 +1,1 @@
-# pku_elective
+# PKU Elective Server
