@@ -30,7 +30,7 @@ if ENVIROMENT == "DEV":
     HOST = "http://localhost:8000"
 elif ENVIROMENT == "TEST":
     DEBUG = True
-    HOST = "https://elective-api-web.herokuapp.com"
+    HOST = "https://elective-api-test.herokuapp.com"
 elif ENVIROMENT == "LIVE":
     DEBUG = False
     HOST = "https://elective-api.herokuapp.com"
