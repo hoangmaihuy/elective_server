@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j!i@i+y&bm$23p2v#hss(gv@i=q6x1wusc3gzocodr+*_#_^l@'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='j!i@i+y&bm$23p2v#hss(gv@i=q6x1wusc3gzocodr+*_#_^l@')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ENVIROMENT = os.environ.get('ENV', default="TEST")
 
-ALLOWED_HOSTS = []
+if ENVIROMENT == "TEST":
+    DEBUG = True
+    HOST = "http://localhost:8000"
+elif ENVIROMENT == "STAGING":
+    DEBUG = False
+    HOST = "https://whispering-sierra-87180.herokuapp.com"
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'whispering-sierra-87180.herokuapp.com']
 
 
 # Application definition
