@@ -28,4 +28,4 @@ RUN adduser -D myuser
 USER myuser
 
 # run gunicorn
-CMD gunicorn elective_server.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn tuike_api.wsgi:application --bind 0.0.0.0:$PORT
