@@ -1,7 +1,7 @@
 import jsonschema
 import requests
 from django.http import HttpResponse, HttpResponseBadRequest
-from common.consts import ErrorCode
+from common.consts import Result
 from functools import wraps
 
 
@@ -27,46 +27,51 @@ def from_json(obj):
 	except Exception:
 		return None
 
+def make_response(result, reply=None):
+	data = {
+		"result": result
+	}
+	if reply is not None:
+		data["reply"] = reply
+	return HttpResponse(from_json(data))
 
 def parse_request(method, schema=None):
 	def outer(func):
 		@wraps(func)
 		def inner(request, *args, **kwargs):
 			if request.method != method:
-				return HttpResponseBadRequest()
+				return make_response(Result.ERROR_BAD_REQUEST)
+
 			data = request.body
 			if request.content_type == 'application/json':
 				data = to_json(data)
 				if data is None:
-					return HttpResponseBadRequest()
+					return
 				if schema:
 					try:
 						jsonschema.validate(data, schema)
 					except jsonschema.ValidationError:
-						return HttpResponseBadRequest()
+						return make_response(Result.ERROR_PARAMS)
 
-			err, reply = func(request, data, *args, **kwargs)
+			result, reply = func(request, data, *args, **kwargs)
 
-			return HttpResponse(from_json({
-				"error": err,
-				"reply": reply,
-			}))
+			return make_response(result, reply)
 
 		return inner
 
 	return outer
 
 
-# return error, reply
+# return result, reply
 def request_api(url, method="POST", headers=None, data=None):
 	if method == "GET":
 		r = requests.get(url, headers=headers, params=data)
 	elif method == "POST":
 		r = requests.post(url, headers=headers, json=data)
 	else:
-		return ErrorCode.ERR_NOT_SUPPORTED, None
+		return Result.ERROR_BAD_REQUEST, None
 
 	if r.status_code != 200:
 		return r.status_code, None
 	resp_data = r.json()
-	return resp_data["error"], resp_data["reply"]
+	return resp_data["result"], resp_data["reply"]

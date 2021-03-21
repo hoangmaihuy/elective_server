@@ -1,6 +1,5 @@
 
-class ErrorCode:
-	OK = 0
-	ERR_NOT_SUPPORTED = 100
-	ERR_FORBIDDEN = 403
-	ERR_NOT_FOUND = 404
+class Result:
+	SUCCESS = "success"
+	ERROR_BAD_REQUEST = "error_bad_request"
+	ERROR_PARAMS = "error_params"

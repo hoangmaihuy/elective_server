@@ -1,4 +1,4 @@
-from elective_server.settings import HOST
+from tuike_api.settings import HOST
 from enum import Enum
 
 TEST_SERVICE_API = HOST + "/test"
