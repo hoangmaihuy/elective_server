@@ -38,6 +38,11 @@ elif ENVIROMENT == "LIVE":
     HOST = "https://tuike-api.herokuapp.com"
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "tuike-api.herokuapp.com"]
 
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'https://tuike-test.herokuapp.com',
+    'https://tuike.herokuapp.com',
+]
 
 # Application definition
 
@@ -52,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
