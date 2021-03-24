@@ -42,6 +42,8 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost',
     'https://localhost',
     'http://localhost:3000',
+    'http://tuike-test.herokuapp.com',
+    'http://tuike.herokuapp.com',
     'https://tuike-test.herokuapp.com',
     'https://tuike.herokuapp.com',
 ]
