@@ -3,3 +3,4 @@ simplejson
 jsonschema==3.2.0
 requests
 gunicorn==20.0.4
+django-cors-headers==3.7.0
