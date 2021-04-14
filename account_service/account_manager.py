@@ -1,5 +1,6 @@
 import jwt
-from tuike_api.settings import SECRET_KEY
+from tuike_api.settings import SECRET_KEY, EMAIL_HOST_USER
+from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.core.validators import validate_email, ValidationError
 from common.cache import cache_func
@@ -15,6 +16,7 @@ def is_pku_mail(email):
 	except ValidationError as e:
 		return False
 
+
 @cache_func(prefix=AUTH_CODE_CACHE_PREFIX, timeout=AUTH_CODE_CACHE_TIMEOUT)
 def generate_auth_code(email):
 	if email == TEST_EMAIL:
@@ -29,8 +31,20 @@ def get_auth_code_by_email(email):
 	return None
 
 
-def send_auth_code(email, auth_code):
-	return True
+def send_auth_code(to_email, auth_code):
+	message = "【推课网】验证码：{}，有效5分钟，请凭验证码登陆。".format(auth_code)
+	try:
+		send_mail(
+			subject="【推课网】登陆验证码",
+			message=message,
+			from_email=EMAIL_HOST_USER,
+			recipient_list=[to_email],
+			fail_silently=False
+		)
+		return True
+	except Exception as e:
+		print(e)
+		return False
 
 
 def generate_token(user):

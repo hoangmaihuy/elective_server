@@ -16,7 +16,7 @@ class TestAccount(SimpleTestCase):
 		self.assertEqual(result, Result.ERROR_INVALID_EMAIL)
 
 		result, reply = request_api(AccountServiceApi.REQUEST_AUTH_CODE, data={
-			"email": TEST_EMAIL
+			"email": "1800094810@pku.edu.cn"
 		})
 		self.assertEqual(result, Result.SUCCESS)
 

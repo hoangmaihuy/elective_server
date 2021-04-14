@@ -11,7 +11,6 @@ def cache_func(prefix, timeout):
 			if cache_value is None:
 				cache_value = func(*args, **kwargs)
 				cache.set(cache_key, cache_value, timeout)
-			print("cache_func|", cache_key, cache_value)
 			return cache_value
 
 		return inner
