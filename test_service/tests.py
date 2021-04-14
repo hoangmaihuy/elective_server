@@ -1,10 +1,10 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
 from common.utils import request_api
 from common.consts import Result
 from test_service.consts import Api as TestServiceApi
 
 
-class TestService(TestCase):
+class TestService(SimpleTestCase):
 	def setUp(self) -> None:
 		pass
 
