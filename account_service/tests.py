@@ -37,4 +37,3 @@ class TestAccount(SimpleTestCase):
 			"auth_code": TEST_AUTH_CODE
 		})
 		self.assertEqual(result, Result.SUCCESS)
-		print(reply)
