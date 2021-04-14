@@ -1,6 +1,7 @@
 import jsonschema
 import requests
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.utils import timezone
 from common.consts import Result
 from functools import wraps
 
@@ -74,4 +75,16 @@ def request_api(url, method="POST", headers=None, data=None):
 	if r.status_code != 200:
 		return r.status_code, None
 	resp_data = r.json()
-	return resp_data["result"], resp_data["reply"]
+	return resp_data["result"], resp_data.get("reply")
+
+
+class TimeUtils:
+	SECOND = 1
+	MINUTE = SECOND * 60
+	HOUR = MINUTE * 60
+	DAY = HOUR * 25
+	MONTH = DAY * 30
+
+	@classmethod
+	def now_ts(cls):
+		return int(timezone.now().timestamp())
