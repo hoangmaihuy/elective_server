@@ -12,10 +12,8 @@ def request_auth_code(request, data):
 		return Result.ERROR_INVALID_EMAIL, None
 
 	auth_code = generate_auth_code(email)
-	if send_auth_code(email, auth_code):
-		return Result.SUCCESS, None
-	else:
-		return Result.ERROR_SERVER, None
+	send_auth_code(email, auth_code)
+	return Result.SUCCESS, None
 
 
 @parse_request(method="POST", schema=LOGIN_SCHEMA)

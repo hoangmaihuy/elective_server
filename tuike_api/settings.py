@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'huey.contrib.djhuey',
     'account_service',
 ]
 
@@ -103,6 +104,23 @@ DATABASES = {
         'HOST': '47.97.40.237',
         'PORT': '3306'
     }
+}
+
+HUEY = {
+    'name': 'tuike_api',
+    'huey_class': 'huey.RedisHuey',
+    'results': True,
+    'immediate': False,
+    'connection': {
+        'url': 'redis://127.0.0.1:6379/1',
+    },
+    'consumer': {
+        'workers': 4,
+        'worker_type': 'thread',
+        'scheduler_interval': 1,
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
 }
 
 CACHES = {

@@ -9,3 +9,4 @@ mysqlclient
 kafka-python
 pyjwt
 django-redis
+huey
