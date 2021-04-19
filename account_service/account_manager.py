@@ -1,11 +1,9 @@
 import jwt
-from tuike_api.settings import SECRET_KEY, EMAIL_HOST_USER
-from django.core.mail import send_mail
+from tuike_api.settings import SECRET_KEY
 from django.utils.crypto import get_random_string
 from django.core.validators import validate_email, ValidationError
 from common.cache import cache_func
 from common.utils import TimeUtils
-from huey.contrib import djhuey
 from account_service.consts import *
 from account_service.models import User
 
@@ -30,23 +28,6 @@ def generate_verification_code(email):
 @cache_func(prefix=VERIFICATION_CODE_CACHE_PREFIX, timeout=0)
 def get_verification_code_by_email(email):
     return None
-
-
-@djhuey.task()
-def send_verification_code(to_email, auth_code):
-    message = "【推课网】验证码：{}，有效5分钟，请凭验证码登陆。".format(auth_code)
-    try:
-        send_mail(
-            subject="【推课网】登陆验证码",
-            message=message,
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[to_email],
-            fail_silently=False
-        )
-        return True
-    except Exception as e:
-        print(e)
-        return False
 
 
 def generate_token(user):

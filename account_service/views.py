@@ -2,6 +2,7 @@ from common.utils import parse_request
 from common.consts import *
 from account_service.schemas import *
 from account_service.account_manager import *
+from tuike_consumer.tasks import send_verification_code
 
 
 @parse_request(method="POST", schema=REQUEST_VERIFICATION_CODE_SCHEMA)

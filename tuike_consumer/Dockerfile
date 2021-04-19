@@ -24,4 +24,4 @@ RUN adduser -D myuser
 USER myuser
 
 # run gunicorn
-CMD gunicorn tuike_api.wsgi:application --bind 0.0.0.0:$PORT
+CMD python manage.py run_huey
