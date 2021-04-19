@@ -18,22 +18,22 @@ def is_pku_mail(email):
         return False
 
 
-@cache_func(prefix=AUTH_CODE_CACHE_PREFIX, timeout=AUTH_CODE_CACHE_TIMEOUT)
-def generate_auth_code(email):
+@cache_func(prefix=VERIFICATION_CODE_CACHE_PREFIX, timeout=VERIFICATION_CODE_CACHE_TIMEOUT)
+def generate_verification_code(email):
     if email == TEST_EMAIL:
-        auth_code = TEST_AUTH_CODE
+        auth_code = TEST_VERIFICATION_CODE
     else:
         auth_code = get_random_string(length=6, allowed_chars='0123456789')
     return auth_code
 
 
-@cache_func(prefix=AUTH_CODE_CACHE_PREFIX, timeout=0)
-def get_auth_code_by_email(email):
+@cache_func(prefix=VERIFICATION_CODE_CACHE_PREFIX, timeout=0)
+def get_verification_code_by_email(email):
     return None
 
 
 @djhuey.task()
-def send_auth_code(to_email, auth_code):
+def send_verification_code(to_email, auth_code):
     message = "【推课网】验证码：{}，有效5分钟，请凭验证码登陆。".format(auth_code)
     try:
         send_mail(
