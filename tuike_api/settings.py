@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'huey.contrib.djhuey',
     'account_service',
 ]
 
@@ -105,10 +106,33 @@ DATABASES = {
     }
 }
 
+HUEY = {
+    'name': 'tuike_api',
+    'huey_class': 'huey.RedisHuey',
+    'results': True,
+    'immediate': False,
+    'connection': {
+        'host': '47.97.40.237',
+        'port': 6380,
+        'password': os.environ.get("TUIKE_REDIS_PASSWORD"),
+    },
+    'consumer': {
+        'workers': 4,
+        'worker_type': 'thread',
+        'scheduler_interval': 1,
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
+}
+
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://47.97.40.237:6380/1",
+        "OPTIONS": {
+            "PASSWORD": os.environ.get("TUIKE_REDIS_PASSWORD"),
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
 

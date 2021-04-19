@@ -1,4 +1,3 @@
-from apt.progress.text import _
 from django.db import models
 
 # Create your models here.

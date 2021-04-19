@@ -1,4 +1,4 @@
-REQUEST_AUTH_CODE_SCHEMA = {
+REQUEST_VERIFICATION_CODE_SCHEMA = {
 	"type": "object",
 	"properties": {
 		"email": {
@@ -14,10 +14,10 @@ LOGIN_SCHEMA = {
 		"email": {
 			"type": "string"
 		},
-		"auth_code": {
+		"verification_code": {
 			"type": "string",
-			"pattern": "[0-9]{6,6}"
+			"pattern": "[0-9]{6}"
 		}
 	},
-	"required": ["email", "auth_code"]
+	"required": ["email", "verification_code"]
 }
