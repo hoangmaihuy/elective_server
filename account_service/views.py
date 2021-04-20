@@ -22,7 +22,7 @@ def login(request, data):
 	email = data["email"]
 	verification_code = data["verification_code"]
 	if verification_code != get_verification_code_by_email(email):
-		return Result.ERROR_AUTHORIZATION, None
+		return Result.ERROR_VERIFICATION_CODE, None
 	user = get_or_create_user_by_email(email)
 	token = generate_token(user)
 	return Result.SUCCESS, {

@@ -26,7 +26,7 @@ class TestAccount(SimpleTestCase):
 			"verification_code": TEST_VERIFICATION_CODE,
 		})
 
-		self.assertEqual(result, Result.ERROR_AUTHORIZATION)
+		self.assertEqual(result, Result.ERROR_VERIFICATION_CODE)
 		result, reply = request_api(AccountServiceApi.REQUEST_VERIFICATION_CODE, data={
 			"email": TEST_EMAIL
 		})
