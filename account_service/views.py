@@ -29,3 +29,11 @@ def login(request, data):
 		"access_token": token
 	}
 
+
+@parse_request(method="GET", auth_required=True)
+def get_user_info(request, data):
+	return Result.SUCCESS, {
+		"user_id": data["auth_info"]["user_id"],
+		"email": data["auth_info"]["email"],
+		"expiry": data["auth_info"]["expiry"],
+	}
