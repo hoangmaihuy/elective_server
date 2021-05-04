@@ -59,3 +59,4 @@ class TestAccount(SimpleTestCase):
 		result, reply = request_api(AccountServiceApi.GET_USER_INFO, method="GET", token=token)
 		self.assertEqual(result, Result.SUCCESS)
 		self.assertEqual(reply["email"], TEST_EMAIL)
+		self.assertEqual(reply["authority"], "user")
