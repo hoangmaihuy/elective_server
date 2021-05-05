@@ -3,8 +3,8 @@ import requests
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
 from common.consts import Result
+from common.crypto import decode_jwt
 from functools import wraps
-
 
 try:
 	import simplejson as json
@@ -36,23 +36,37 @@ def make_response(result, reply=None):
 		data["reply"] = reply
 	return HttpResponse(from_json(data))
 
-def parse_request(method, schema=None):
+def parse_request(method, schema=None, auth_required=False):
 	def outer(func):
 		@wraps(func)
 		def inner(request, *args, **kwargs):
 			if request.method != method:
 				return make_response(Result.ERROR_BAD_REQUEST)
+			data = {}
 
-			data = request.body
-			if request.content_type == 'application/json':
-				data = to_json(data)
-				if data is None:
-					return
-				if schema:
-					try:
-						jsonschema.validate(data, schema)
-					except jsonschema.ValidationError:
-						return make_response(Result.ERROR_PARAMS)
+			if auth_required:
+				auth = request.headers.get('Authorization')
+				if auth is None:
+					return make_response(Result.ERROR_AUTHORIZATION)
+				try:
+					token = auth.split()[1]
+					auth_info = decode_jwt(token)
+					data["auth_info"] = auth_info
+				except Exception:
+					return make_response(Result.ERROR_AUTHORIZATION)
+
+
+			if method == "POST":
+				data = request.body
+				if request.content_type == 'application/json':
+					data = to_json(data)
+					if data is None:
+						return
+					if schema:
+						try:
+							jsonschema.validate(data, schema)
+						except jsonschema.ValidationError:
+							return make_response(Result.ERROR_PARAMS)
 
 			result, reply = func(request, data, *args, **kwargs)
 
@@ -64,7 +78,11 @@ def parse_request(method, schema=None):
 
 
 # return result, reply
-def request_api(url, method="POST", headers=None, data=None):
+def request_api(url, method="POST", headers=None, data=None, token=None):
+	if not headers:
+		headers = {}
+	if token:
+		headers["Authorization"] = "Bearer " + token
 	if method == "GET":
 		r = requests.get(url, headers=headers, params=data)
 	elif method == "POST":

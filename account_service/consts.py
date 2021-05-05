@@ -6,9 +6,10 @@ ACCOUNT_SERVICE_API = HOST + "/account"
 class AccountServiceApi:
 	REQUEST_VERIFICATION_CODE = ACCOUNT_SERVICE_API + "/request_verification_code"
 	LOGIN = ACCOUNT_SERVICE_API + "/login"
+	GET_USER_INFO = ACCOUNT_SERVICE_API + "/get_user_info"
 
 
-TEST_EMAIL = 'example@pku.edu.cn'
+TEST_EMAIL = 'test_example@pku.edu.cn'
 TEST_VERIFICATION_CODE = '123456'
 
 VERIFICATION_CODE_CACHE_PREFIX = "VERIFICATION_CODE"

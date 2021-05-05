@@ -1,9 +1,8 @@
-import jwt
-from tuike_api.settings import SECRET_KEY
 from django.utils.crypto import get_random_string
 from django.core.validators import validate_email, ValidationError
 from common.cache import cache_func
 from common.utils import TimeUtils
+from common.crypto import encode_jwt, decode_jwt
 from account_service.consts import *
 from account_service.models import User
 
@@ -31,20 +30,13 @@ def get_verification_code_by_email(email):
 
 
 def generate_token(user):
-    token = jwt.encode({
+    token = encode_jwt({
         "user_id": user.id,
         "email": user.email,
         "last_login": user.last_login,
         "expiry": TimeUtils.now_ts() + TimeUtils.DAY * 7
-    }, SECRET_KEY, algorithm="HS256")
+    })
     return token
-
-
-def decode_token(token):
-    try:
-        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-    except jwt.InvalidTokenError as e:
-        return None
 
 
 def get_or_create_user_by_email(email):
@@ -60,3 +52,7 @@ def get_or_create_user_by_email(email):
     )
 
     return user
+
+
+def get_user_by_id(user_id):
+    return User.objects.get(id=user_id)
