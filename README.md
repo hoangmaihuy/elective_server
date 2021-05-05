@@ -1,1 +1,1 @@
-# PKU Elective Server
+# 推课网 API
