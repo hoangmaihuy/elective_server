@@ -29,4 +29,3 @@ class TestCourse(SimpleTestCase):
 			"page_size": 20,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
-		print(reply)
