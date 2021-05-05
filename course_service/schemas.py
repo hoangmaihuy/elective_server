@@ -25,7 +25,7 @@ GET_COURSE_LIST_SCHEMA = {
 			"type": "integer",
 		},
 		"order_by": {
-			"type": "array",
+			"type": "string",
 		}
 	},
 	"required": ["current_page", "page_size"]
