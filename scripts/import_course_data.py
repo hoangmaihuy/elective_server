@@ -5,8 +5,8 @@ sys.path.append(os.getcwd())
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tuike_api.settings")
 django.setup()
 
-from review_service.consts import CourseType, SchoolList
-from review_service.models import Course, Class, Teacher
+from course_service.consts import CourseType, SchoolList
+from course_service.models import Course, Class, Teacher
 from common.utils import TimeUtils
 import simplejson as json
 
@@ -54,7 +54,7 @@ def import_courses(course_type):
 		)
 		course_objs.append(c)
 	print("bulk_create {}".format(course_type))
-	Course.objects.bulk_create(course_objs, batch_size=BATCH_SIZE)
+	Course.objects.bulk_create(course_objs)
 	print("bulk_create finished")
 
 if __name__ == '__main__':

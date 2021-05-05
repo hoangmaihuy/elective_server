@@ -1,3 +1,12 @@
+from tuike_api.settings import HOST
+
+COURSE_SERVICE_API = HOST + "/course"
+
+
+class CourseServiceApi:
+	GET_COURSE_LIST = COURSE_SERVICE_API + "/get_course_list"
+
+
 SchoolList = {
 	"数学科学学院": 1,
 	"物理学院": 2,
