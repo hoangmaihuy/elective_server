@@ -29,3 +29,18 @@ def login(request, data):
 		"access_token": token
 	}
 
+
+@parse_request(method="GET", auth_required=True)
+def get_user_info(request, data):
+	user_id = data["auth_info"]["user_id"]
+	user = get_user_by_id(user_id)
+	if user is None:
+		return Result.ERROR_AUTHORIZATION, None
+
+	authority = "admin" if user.is_superuser else "user"
+	return Result.SUCCESS, {
+		"user_id": user.id,
+		"email": user.email,
+		"authority": authority,
+		"expiry": data["auth_info"]["expiry"],
+	}
