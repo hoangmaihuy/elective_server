@@ -29,7 +29,7 @@ def get_course_list(request, data):
 		else:
 			params["type"] = course_type
 	if order_by is None:
-		order_by = ["-last_review"]
+		order_by = "-review_count"
 
 	total, courses = course_manager.get_courses_by_params(params, order_by, offset, page_size)
 	return Result.SUCCESS, {

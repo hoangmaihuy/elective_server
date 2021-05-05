@@ -9,6 +9,10 @@ class Course(models.Model):
 	school_id = models.PositiveSmallIntegerField()
 	type = models.PositiveSmallIntegerField()
 	review_count = models.PositiveIntegerField()
+	recommend_score = models.FloatField(default=0)
+	exam_score = models.FloatField(default=0)
+	work_score = models.FloatField(default=0)
+	content_score = models.FloatField(default=0)
 	last_review = models.PositiveBigIntegerField()
 	create_time = models.PositiveBigIntegerField()
 
@@ -28,6 +32,10 @@ class Class(models.Model):
 	teacher_id = models.PositiveBigIntegerField()
 	semester = models.PositiveSmallIntegerField()
 	review_count = models.PositiveSmallIntegerField()
+	recommend_score = models.FloatField(default=0)
+	exam_score = models.FloatField(default=0)
+	work_score = models.FloatField(default=0)
+	content_score = models.FloatField(default=0)
 	create_time = models.PositiveBigIntegerField()
 
 	class Meta:
@@ -41,6 +49,10 @@ class Teacher(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=20)
 	review_count = models.PositiveIntegerField()
+	recommend_score = models.FloatField(default=0)
+	exam_score = models.FloatField(default=0)
+	work_score = models.FloatField(default=0)
+	content_score = models.FloatField(default=0)
 	create_time = models.PositiveBigIntegerField()
 
 	class Meta:
