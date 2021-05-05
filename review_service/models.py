@@ -18,7 +18,7 @@ class Course(models.Model):
 			models.Index(fields=['name'], name='course_name_idx'),
 			models.Index(fields=['course_no'], name='course_no_idx'),
 			models.Index(fields=['school_id'], name='school_id_idx'),
-			models.Index(fields=['type', 'subtype'], name='course_type_idx'),
+			models.Index(fields=['type'], name='course_type_idx'),
 		]
 
 
