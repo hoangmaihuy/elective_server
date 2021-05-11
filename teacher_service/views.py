@@ -1,5 +1,6 @@
 from common.utils import parse_request
 from common.consts import *
+from teacher_service import teacher_manager
 
 
 @parse_request(method="GET", login_required=True)
