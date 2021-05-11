@@ -29,3 +29,10 @@ class TestCourse(SimpleTestCase):
 			"page_size": 20,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+
+	def test_get_courses_by_school(self):
+		result, reply = request_api(CourseServiceApi.GET_COURSES_BY_SCHOOL, data={
+			"school_ids": [1, 2, 3, 4, 5]
+		}, token=self._token)
+
+		self.assertEqual(result, Result.SUCCESS)

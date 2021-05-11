@@ -30,7 +30,7 @@ def login(request, data):
 	}
 
 
-@parse_request(method="GET", auth_required=True)
+@parse_request(method="GET", login_required=True)
 def get_user_info(request, data):
 	user_id = data["auth_info"]["user_id"]
 	user = get_user_by_id(user_id)

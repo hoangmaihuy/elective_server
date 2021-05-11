@@ -5,9 +5,10 @@ COURSE_SERVICE_API = HOST + "/course"
 
 class CourseServiceApi:
 	GET_COURSE_LIST = COURSE_SERVICE_API + "/get_course_list"
+	GET_COURSES_BY_SCHOOL= COURSE_SERVICE_API + "/get_courses_by_school"
 
 
-SchoolList = {
+SchoolEnum = {
 	"数学科学学院": 1,
 	"物理学院": 2,
 	"化学与分子工程学院": 3,
@@ -61,7 +62,7 @@ SchoolList = {
 }
 
 
-CourseType = {
+CourseTypeEnum = {
 	"专业课": 100,
 	"政治课": 200,
 	"英语课": 300,

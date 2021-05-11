@@ -30,3 +30,17 @@ GET_COURSE_LIST_SCHEMA = {
 	},
 	"required": ["current_page", "page_size"]
 }
+
+
+GET_COURSES_BY_SCHOOL = {
+	"type": "object",
+	"properties": {
+		"school_ids": {
+			"type": "array",
+			"items": {
+				"type": "number",
+			}
+		}
+	},
+	"required": ["school_ids"],
+}

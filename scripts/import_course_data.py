@@ -5,7 +5,7 @@ sys.path.append(os.getcwd())
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tuike_api.settings")
 django.setup()
 
-from course_service.consts import CourseType, SchoolList
+from course_service.consts import CourseTypeEnum, SchoolEnum
 from course_service.models import Course, Class, Teacher
 from common.utils import TimeUtils
 import simplejson as json
@@ -28,7 +28,7 @@ def import_courses(course_type):
 		courses = json.load(f)
 	course_objs = []
 	for course in courses:
-		school_id = SchoolList.get(course['school'])
+		school_id = SchoolEnum.get(course['school'])
 		if school_id is None:
 			print("No school_id for {}".format(course['school']))
 			continue
@@ -37,7 +37,7 @@ def import_courses(course_type):
 			type_name = type_name + course['level']
 		elif course_type == 'trans_choice':
 			type_name = type_name + course['type']
-		type_id = CourseType.get(type_name)
+		type_id = CourseTypeEnum.get(type_name)
 		if type_id is None:
 			print("No type_id for {}".format(type_name))
 			continue

@@ -5,7 +5,7 @@ from course_service.consts import *
 from course_service import course_manager
 
 
-@parse_request(method="POST", schema=GET_COURSE_LIST_SCHEMA, auth_required=True)
+@parse_request(method="POST", schema=GET_COURSE_LIST_SCHEMA, login_required=True)
 def get_course_list(request, data):
 	current_page = data["current_page"]
 	page_size = data["page_size"]
@@ -36,3 +36,23 @@ def get_course_list(request, data):
 		"total": total,
 		"courses": courses
 	}
+
+
+@parse_request(method="POST", schema=GET_COURSES_BY_SCHOOL, login_required=True)
+def get_courses_by_school(request, data):
+	school_ids = data["school_ids"]
+	for school_id in school_ids:
+		if school_id not in SchoolEnum.values():
+			return Result.ERROR_PARAMS, None
+
+	courses = course_manager.get_courses_by_school_ids(school_ids)
+	courses_by_school = {}
+	for course in courses:
+		school_courses = courses_by_school.setdefault(course.school_id, [])
+		school_courses.append({
+			"name": course.name,
+			"credit": course.credit,
+			"review_count": course.review_count
+		})
+
+	return Result.SUCCESS, courses_by_school
