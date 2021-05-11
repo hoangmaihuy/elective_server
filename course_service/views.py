@@ -50,7 +50,9 @@ def get_courses_by_school(request, data):
 	for course in courses:
 		school_courses = courses_by_school.setdefault(course.school_id, [])
 		school_courses.append({
+			"id": course.id,
 			"name": course.name,
+			"course_no": course.course_no,
 			"credit": course.credit,
 			"review_count": course.review_count
 		})

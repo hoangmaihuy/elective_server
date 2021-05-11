@@ -22,7 +22,6 @@ def to_json(str):
 
 # Convert json object to json string
 def from_json(obj):
-	print(obj)
 	try:
 		return json.dumps(obj, encoding='utf-8', ensure_ascii=False)
 	except Exception:
