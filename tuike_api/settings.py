@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'account_service',
     'course_service',
     'review_service',
+    'teacher_service',
 ]
 
 MIDDLEWARE = [
