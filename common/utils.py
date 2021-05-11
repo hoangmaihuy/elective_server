@@ -36,7 +36,7 @@ def make_response(result, reply=None):
 		data["reply"] = reply
 	return HttpResponse(from_json(data))
 
-def parse_request(method, schema=None, auth_required=False):
+def parse_request(method, schema=None, login_required=False):
 	def outer(func):
 		@wraps(func)
 		def inner(request, *args, **kwargs):
@@ -44,7 +44,7 @@ def parse_request(method, schema=None, auth_required=False):
 				return make_response(Result.ERROR_BAD_REQUEST)
 			data = {}
 
-			if auth_required:
+			if login_required:
 				auth = request.headers.get('Authorization')
 				if auth is None:
 					return make_response(Result.ERROR_AUTHORIZATION)

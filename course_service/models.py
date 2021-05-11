@@ -8,7 +8,7 @@ class Course(models.Model):
 	credit = models.PositiveSmallIntegerField()
 	school_id = models.PositiveSmallIntegerField()
 	type = models.PositiveSmallIntegerField()
-	review_count = models.PositiveIntegerField()
+	review_count = models.PositiveIntegerField(default=0)
 	recommend_score = models.FloatField(default=0)
 	exam_score = models.FloatField(default=0)
 	work_score = models.FloatField(default=0)
@@ -30,8 +30,8 @@ class Class(models.Model):
 	id = models.BigAutoField(primary_key=True)
 	course_id = models.PositiveBigIntegerField()
 	teacher_id = models.PositiveBigIntegerField()
-	semester = models.PositiveSmallIntegerField()
-	review_count = models.PositiveSmallIntegerField()
+	semester = models.CharField(max_length=10)
+	review_count = models.PositiveSmallIntegerField(default=0)
 	recommend_score = models.FloatField(default=0)
 	exam_score = models.FloatField(default=0)
 	work_score = models.FloatField(default=0)
@@ -45,18 +45,3 @@ class Class(models.Model):
 		]
 
 
-class Teacher(models.Model):
-	id = models.AutoField(primary_key=True)
-	name = models.CharField(max_length=20)
-	review_count = models.PositiveIntegerField()
-	recommend_score = models.FloatField(default=0)
-	exam_score = models.FloatField(default=0)
-	work_score = models.FloatField(default=0)
-	content_score = models.FloatField(default=0)
-	create_time = models.PositiveBigIntegerField()
-
-	class Meta:
-		db_table = 'teacher_tab'
-		indexes = [
-			models.Index(fields=['name'], name='teacher_name_idx')
-		]

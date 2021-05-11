@@ -1,8 +1,9 @@
 from django.test import SimpleTestCase
-from common.utils import request_api
 from common.consts import *
-from course_service.consts import *
+from common.utils import *
 from account_service.consts import *
+from teacher_service.consts import *
+
 
 
 class TestCourse(SimpleTestCase):
@@ -23,16 +24,7 @@ class TestCourse(SimpleTestCase):
 		token = reply["access_token"]
 		return token
 
-	def test_get_course_list(self):
-		result, reply = request_api(CourseServiceApi.GET_COURSE_LIST, data={
-			"current_page": 1,
-			"page_size": 20,
-		}, token=self._token)
+	def test_get_teacher_names(self):
+		result, reply = request_api(TeacherServiceApi.GET_TEACHER_LIST, method="GET", token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
-
-	def test_get_courses_by_school(self):
-		result, reply = request_api(CourseServiceApi.GET_COURSES_BY_SCHOOL, data={
-			"school_ids": [1, 2, 3, 4, 5]
-		}, token=self._token)
-
-		self.assertEqual(result, Result.SUCCESS)
+		print(reply)
