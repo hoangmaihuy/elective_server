@@ -27,4 +27,3 @@ class TestCourse(SimpleTestCase):
 	def test_get_teacher_names(self):
 		result, reply = request_api(TeacherServiceApi.GET_TEACHER_LIST, method="GET", token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
-		print(reply)
