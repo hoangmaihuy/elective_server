@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'huey.contrib.djhuey',
     'account_service',
-	'course_service',
+    'course_service',
+    'review_service',
 ]
 
 MIDDLEWARE = [
