@@ -1,7 +1,9 @@
+from common.cache import cache_func
 from common.logger import log
 from teacher_service.models import *
 
 
+@cache_func()
 def get_teacher_names():
 	return list(Teacher.objects.all().values("id", "name"))
 
