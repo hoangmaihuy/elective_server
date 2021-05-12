@@ -42,7 +42,6 @@ def parse_request(method, schema=None, login_required=False):
 			if request.method != method:
 				return make_response(Result.ERROR_BAD_REQUEST)
 			data = {}
-
 			if login_required:
 				auth = request.headers.get('Authorization')
 				if auth is None:
@@ -50,20 +49,21 @@ def parse_request(method, schema=None, login_required=False):
 				try:
 					token = auth.split()[1]
 					auth_info = decode_jwt(token)
-					data["auth_info"] = auth_info
+					data["__auth_info"] = auth_info
 				except Exception:
 					return make_response(Result.ERROR_AUTHORIZATION)
 
 
 			if method == "POST":
-				data = request.body
+				_data = request.body
 				if request.content_type == 'application/json':
-					data = to_json(data)
-					if data is None:
+					_data = to_json(_data)
+					if _data is None:
 						return
 					if schema:
 						try:
-							jsonschema.validate(data, schema)
+							jsonschema.validate(_data, schema)
+							data.update(_data)
 						except jsonschema.ValidationError:
 							return make_response(Result.ERROR_PARAMS)
 
