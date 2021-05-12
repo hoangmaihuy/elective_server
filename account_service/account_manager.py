@@ -45,5 +45,6 @@ def get_or_create_user_by_email(email):
     return user
 
 
+@cache_func(prefix=GET_USER_BY_ID_CACHE_PREFIX, timeout=GET_USER_BY_ID_CACHE_TIMEOUT)
 def get_user_by_id(user_id):
     return User.objects.get(id=user_id)

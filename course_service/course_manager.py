@@ -1,6 +1,8 @@
 from common.utils import TimeUtils
+from common.cache import cache_func
 from common.logger import log
 from course_service.models import *
+from course_service.consts import *
 
 
 def get_courses_by_params(params, order_by=None, offset=0, limit=1):
@@ -12,6 +14,7 @@ def get_courses_by_params(params, order_by=None, offset=0, limit=1):
 	return total, list(courses.values())
 
 
+@cache_func(prefix=GET_COURSES_BY_SCHOOL_CACHE_PREFIX, timeout=GET_COURSES_BY_SCHOOL_CACHE_TIMEOUT)
 def get_courses_by_school_ids(school_ids):
 	return Course.objects.filter(school_id__in=school_ids)
 
@@ -22,6 +25,11 @@ def get_class(course_id, teacher_id, semester):
 		teacher_id=teacher_id,
 		semester=semester,
 	).first()
+
+
+@cache_func(prefix=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_PREFIX, timeout=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_TIMEOUT)
+def get_teacher_ids_by_course_id(course_id):
+	return list(Class.objects.filter(course_id=course_id).values_list("teacher_id", flat=True))
 
 
 def update_course_score(course_id, score):
