@@ -27,6 +27,11 @@ def get_class(course_id, teacher_id, semester):
 	).first()
 
 
+@cache_func(prefix=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_PREFIX, timeout=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_TIMEOUT)
+def get_teacher_ids_by_course_id(course_id):
+	return list(Class.objects.filter(course_id=course_id).values_list("teacher_id", flat=True))
+
+
 def update_course_score(course_id, score):
 	course = Course.objects.filter(id=course_id).first()
 	if not course:

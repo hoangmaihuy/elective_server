@@ -1,5 +1,6 @@
 from common.cache import cache_func
 from common.logger import log
+from course_service import course_manager
 from teacher_service.models import *
 from teacher_service.consts import *
 
@@ -7,6 +8,13 @@ from teacher_service.consts import *
 @cache_func(prefix=GET_TEACHER_NAMES_CACHE_PREFIX, timeout=GET_TEACHER_NAMES_CACHE_TIMEOUT)
 def get_teacher_names():
 	return list(Teacher.objects.all().values("id", "name"))
+
+
+@cache_func(prefix=GET_TEACHERS_BY_COURSE_CACHE_PREFIX, timeout=GET_TEACHERS_BY_COURSE_CACHE_TIMEOUT)
+def get_teachers_by_course(course_id):
+	teacher_ids = course_manager.get_teacher_ids_by_course_id(course_id)
+	teachers = list(Teacher.objects.filter(id__in=teacher_ids).values("id", "name"))
+	return teachers
 
 
 def update_teacher_score(teacher_id, score):
