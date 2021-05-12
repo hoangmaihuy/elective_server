@@ -15,8 +15,13 @@ def get_courses_by_params(params, order_by=None, offset=0, limit=1):
 
 
 @cache_func(prefix=GET_COURSES_BY_SCHOOL_CACHE_PREFIX, timeout=GET_COURSES_BY_SCHOOL_CACHE_TIMEOUT)
-def get_courses_by_school_ids(school_ids):
-	return Course.objects.filter(school_id__in=school_ids)
+def get_courses_by_school():
+	courses = list(Course.objects.all().values("id", "name", "school_id", "course_no", "credit", "review_count"))
+	courses_by_school = {}
+	for course in courses:
+		school_courses = courses_by_school.setdefault(course["school_id"], [])
+		school_courses.append(course)
+	return courses_by_school
 
 
 def get_class(course_id, teacher_id, semester):
