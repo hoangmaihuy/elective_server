@@ -1,9 +1,10 @@
 from common.cache import cache_func
 from common.logger import log
 from teacher_service.models import *
+from teacher_service.consts import *
 
 
-@cache_func()
+@cache_func(prefix=GET_TEACHER_NAMES_CACHE_PREFIX, timeout=GET_TEACHER_NAMES_CACHE_TIMEOUT)
 def get_teacher_names():
 	return list(Teacher.objects.all().values("id", "name"))
 
