@@ -38,23 +38,8 @@ def get_course_list(request, data):
 	}
 
 
-@parse_request(method="POST", schema=GET_COURSES_BY_SCHOOL, login_required=True)
+@parse_request(method="GET", login_required=True)
 def get_courses_by_school(request, data):
-	school_ids = data["school_ids"]
-	for school_id in school_ids:
-		if school_id not in SchoolEnum.values():
-			return Result.ERROR_PARAMS, None
-
-	courses = course_manager.get_courses_by_school_ids(school_ids)
-	courses_by_school = {}
-	for course in courses:
-		school_courses = courses_by_school.setdefault(course.school_id, [])
-		school_courses.append({
-			"id": course.id,
-			"name": course.name,
-			"course_no": course.course_no,
-			"credit": course.credit,
-			"review_count": course.review_count
-		})
-
+	courses_by_school = course_manager.get_courses_by_school()
 	return Result.SUCCESS, courses_by_school
+
