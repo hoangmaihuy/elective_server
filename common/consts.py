@@ -7,3 +7,4 @@ class Result:
 	ERROR_INVALID_EMAIL = "error_invalid_email"
 	ERROR_VERIFICATION_CODE = "error_verification_code"
 	ERROR_AUTHORIZATION = "error_authorization"
+	ERROR_CLASS_NOT_EXIST = "error_class_not_exist"

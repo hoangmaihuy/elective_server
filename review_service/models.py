@@ -12,7 +12,6 @@ class Review(models.Model):
     exam_score = models.FloatField(default=0)
     work_score = models.FloatField(default=0)
     content_score = models.FloatField(default=0)
-    user_grade = models.PositiveSmallIntegerField(default=0)
     create_by = models.PositiveBigIntegerField()
     create_time = models.PositiveBigIntegerField()
 

@@ -2,6 +2,7 @@ from common.utils import parse_request
 from common.consts import *
 from account_service.schemas import *
 from account_service.account_manager import *
+from common.validator import is_pku_mail
 from tuike_consumer.tasks import send_verification_code
 
 

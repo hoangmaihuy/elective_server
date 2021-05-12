@@ -35,5 +35,5 @@ ADD_REVIEW_SCHEMA = {
             "maximum": 100,
         }
     },
-    "required": ["course_id", "teacher_id", "semester"],
+    "required": ["course_id", "teacher_id", "semester", "recommend_score", "content_score", "work_score", "exam_score"],
 }
