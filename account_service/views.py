@@ -33,7 +33,7 @@ def login(request, data):
 
 @parse_request(method="GET", login_required=True)
 def get_user_info(request, data):
-	user_id = data["auth_info"]["user_id"]
+	user_id = data["__auth_info"]["user_id"]
 	user = get_user_by_id(user_id)
 	if user is None:
 		return Result.ERROR_AUTHORIZATION, None
@@ -43,5 +43,5 @@ def get_user_info(request, data):
 		"user_id": user.id,
 		"email": user.email,
 		"authority": authority,
-		"expiry": data["auth_info"]["expiry"],
+		"expiry": data["__auth_info"]["expiry"],
 	}
