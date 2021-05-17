@@ -1,3 +1,4 @@
+import course_service.class_manager
 from common.utils import parse_request
 from common.validator import is_valid_semester
 from common.consts import *
@@ -16,7 +17,7 @@ def add_review(request, data):
     if not is_valid_semester(semester):
         return Result.ERROR_PARAMS, None
 
-    course_class = course_manager.get_class(course_id, teacher_id, semester)
+    course_class = course_service.class_manager.get_class(course_id, teacher_id, semester)
     if not course_class:
         return Result.ERROR_CLASS_NOT_EXIST, None
 
@@ -34,3 +35,12 @@ def add_review(request, data):
 
     return Result.SUCCESS, None
 
+
+@parse_request(method="POST", schema=GET_LATEST_REVIEWS_SCHEMA, login_required=True)
+def get_latest_reviews(request, data):
+    offset = data["offset"]
+    size = data["size"]
+    reviews = review_manager.get_latest_reviews(offset, size)
+    return Result.SUCCESS, {
+        "reviews": reviews
+    }

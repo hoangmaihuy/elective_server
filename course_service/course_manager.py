@@ -35,17 +35,16 @@ def get_course_rank(course_type, school_id, rank_size):
 	return courses
 
 
-def get_class(course_id, teacher_id, semester):
-	return Class.objects.filter(
-		course_id=course_id,
-		teacher_id=teacher_id,
-		semester=semester,
-	).first()
-
-
 @cache_func(prefix=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_PREFIX, timeout=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_TIMEOUT)
 def get_teacher_ids_by_course_id(course_id):
 	return list(Class.objects.filter(course_id=course_id).values_list("teacher_id", flat=True))
+
+
+def get_course_infos_by_ids(course_ids):
+	courses = Course.objects.filter(id__in=course_ids).values(
+		"id", "name", "course_no", "credit", "school_id", "type", "review_count"
+	)
+	return courses
 
 
 def update_course_score(course_id, score):
@@ -66,24 +65,4 @@ def update_course_score(course_id, score):
 		return True
 	except Exception as e:
 		log.error("update_course_score_exception|course_id={},exception={}".format(course_id, e))
-		return False
-
-
-def update_class_score(class_id, score):
-	c = Class.objects.filter(id=class_id).first()
-	if not c:
-		log.error("update_class_score_class_not_found|class_id=", class_id)
-		return False
-	review_count = c.review_count
-	rate = review_count / (review_count + 1)
-	c.recommend_score = c.recommend_score * rate + score["recommend_score"] / (review_count + 1)
-	c.content_score = c.content_score * rate + score["content_score"] / (review_count + 1)
-	c.work_score = c.work_score * rate + score["work_score"] / (review_count + 1)
-	c.exam_score = c.exam_score * rate + score["exam_score"] / (review_count + 1)
-	c.review_count = review_count + 1
-	try:
-		c.save()
-		return True
-	except Exception as e:
-		log.error("update_class_score_exception|class_id={},exception={}".format(class_id, e))
 		return False
