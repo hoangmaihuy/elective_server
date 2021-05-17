@@ -32,15 +32,22 @@ GET_COURSE_LIST_SCHEMA = {
 }
 
 
-GET_COURSES_BY_SCHOOL = {
+GET_COURSE_RANK_SCHEMA = {
 	"type": "object",
 	"properties": {
-		"school_ids": {
-			"type": "array",
-			"items": {
-				"type": "number",
-			}
-		}
+		"course_type": {
+			"type": "integer",
+			"minimum": 1,
+		},
+		"school_id": {
+			"type": "integer",
+			"minimum": 1,
+		},
+		"rank_size": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 50,
+		},
 	},
-	"required": ["school_ids"],
+	"required": ["course_type"]
 }

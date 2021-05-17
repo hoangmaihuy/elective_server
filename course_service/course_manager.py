@@ -24,6 +24,17 @@ def get_courses_by_school():
 	return courses_by_school
 
 
+@cache_func(prefix=GET_COURSE_RANK_CACHE_PREFIX, timeout=GET_COURSE_RANK_CACHE_TIMEOUT)
+def get_course_rank(course_type, school_id, rank_size):
+	qs = Course.objects.filter(type__range=(course_type, course_type+99))
+	if school_id:
+		qs = qs.filter(school_id=school_id)
+	qs = qs.order_by("-recommend_score", "-review_count", "-last_review")
+	qs = qs[:rank_size]
+	courses = list(qs.values("id", "name", "recommend_score"))
+	return courses
+
+
 def get_class(course_id, teacher_id, semester):
 	return Class.objects.filter(
 		course_id=course_id,
@@ -56,6 +67,7 @@ def update_course_score(course_id, score):
 	except Exception as e:
 		log.error("update_course_score_exception|course_id={},exception={}".format(course_id, e))
 		return False
+
 
 def update_class_score(class_id, score):
 	c = Class.objects.filter(id=class_id).first()
