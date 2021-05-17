@@ -43,3 +43,19 @@ def get_courses_by_school(request, data):
 	courses_by_school = course_manager.get_courses_by_school()
 	return Result.SUCCESS, courses_by_school
 
+
+@parse_request(method="POST", schema=GET_COURSE_RANK_SCHEMA, login_required=True)
+def get_course_rank(request, data):
+	course_type = data["course_type"]
+	if course_type not in CourseTypeEnum.values() or course_type % 100 != 0:
+		return Result.ERROR_PARAMS, None
+
+	school_id = data.get("school_id")
+	if school_id and school_id not in SchoolEnum.values():
+		return Result.ERROR_PARAMS, None
+
+	rank_size = data.get("rank_size", 10)
+	courses = course_manager.get_course_rank(course_type, school_id, rank_size)
+	return Result.SUCCESS, {
+		"courses": courses
+	}
