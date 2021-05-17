@@ -51,3 +51,14 @@ GET_COURSE_RANK_SCHEMA = {
 	},
 	"required": ["course_type"]
 }
+
+GET_COURSE_INFO_SCHEMA = {
+	"type": "object",
+	"properties": {
+		"course_id": {
+			"type": "integer",
+			"minimum": 1,
+		}
+	},
+	"required": ["course_id"],
+}

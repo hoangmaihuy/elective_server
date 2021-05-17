@@ -8,3 +8,4 @@ class Result:
 	ERROR_VERIFICATION_CODE = "error_verification_code"
 	ERROR_AUTHORIZATION = "error_authorization"
 	ERROR_CLASS_NOT_EXIST = "error_class_not_exist"
+	ERROR_COURSE_NOT_FOUND = "error_course_not_found"

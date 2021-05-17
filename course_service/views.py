@@ -59,3 +59,12 @@ def get_course_rank(request, data):
 	return Result.SUCCESS, {
 		"courses": courses
 	}
+
+
+@parse_request(method="POST", schema=GET_COURSE_INFO_SCHEMA, login_required=True)
+def get_course_info(request, data):
+	course_id = data["course_id"]
+	course_info = course_manager.get_course_info(course_id)
+	if not course_info:
+		return Result.ERROR_COURSE_NOT_FOUND, None
+	return Result.SUCCESS, course_info

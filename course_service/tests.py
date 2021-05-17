@@ -40,4 +40,14 @@ class TestCourse(SimpleTestCase):
 			"school_id": 2,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
-		print(reply)
+
+	def test_get_course_info(self):
+		result, reply = request_api(CourseServiceApi.GET_COURSE_INFO, method="POST", data={
+			"course_id": 99999,
+		}, token=self._token)
+		self.assertEqual(result, Result.ERROR_COURSE_NOT_FOUND)
+
+		result, reply = request_api(CourseServiceApi.GET_COURSE_INFO, method="POST", data={
+			"course_id": 1,
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)

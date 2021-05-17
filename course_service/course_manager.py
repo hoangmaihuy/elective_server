@@ -47,6 +47,10 @@ def get_course_infos_by_ids(course_ids):
 	return courses
 
 
+def get_course_info(course_id):
+	return Course.objects.filter(id=course_id).values().first()
+
+
 def update_course_score(course_id, score):
 	course = Course.objects.filter(id=course_id).first()
 	if not course:
