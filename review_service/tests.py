@@ -37,3 +37,9 @@ class TestReview(SimpleTestCase):
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
 
+	def test_get_latest_reviews(self):
+		result, reply = request_api(ReviewServiceApi.GET_LATEST_REVIEWS, data={
+			"offset": 0,
+			"size": 10,
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)

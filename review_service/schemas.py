@@ -37,3 +37,19 @@ ADD_REVIEW_SCHEMA = {
     },
     "required": ["course_id", "teacher_id", "semester", "recommend_score", "content_score", "work_score", "exam_score"],
 }
+
+GET_LATEST_REVIEWS_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "offset": {
+            "type": "integer",
+            "minimum": 0,
+        },
+        "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+        },
+    },
+    "required": ["offset", "size"]
+}
