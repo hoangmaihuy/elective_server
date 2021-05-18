@@ -10,8 +10,17 @@ GET_LATEST_REVIEWS_CACHE_TIMEOUT = 60 * 2
 class ReviewServiceApi:
 	ADD_REVIEW = REVIEW_SERVICE_API + "/add_review"
 	GET_LATEST_REVIEWS = REVIEW_SERVICE_API + "/get_latest_reviews"
+	GET_COURSE_REVIEWS = REVIEW_SERVICE_API + "/get_course_reviews"
+	INTERACT_REVIEW = REVIEW_SERVICE_API + "/interact_review"
 
 
+class ReviewInteraction:
+	DISLIKE = 0
+	LIKE = 1
+
+
+TEST_UID = 3
 TEST_COURSE_ID = 1824
 TEST_TEACHER_ID = 3241
+TEST_REVIEW_ID = 2
 TEST_SEMESTER = "20-21-2"

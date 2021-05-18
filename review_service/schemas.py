@@ -9,6 +9,12 @@ SCORE_SCHEMA = {
     "maximum": 5,
 }
 
+SEMESTER_SCHEMA = {
+    "type": "string",
+    "minLength": 7,
+    "maxLength": 7,
+}
+
 ADD_REVIEW_SCHEMA = {
     "type": "object",
     "properties": {
@@ -52,4 +58,39 @@ GET_LATEST_REVIEWS_SCHEMA = {
         },
     },
     "required": ["offset", "size"]
+}
+
+GET_COURSE_REVIEWS_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "current_page": {
+            "type": "integer",
+            "minimum": 1,
+        },
+        "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+        },
+        "course_id": ID_SCHEMA,
+        "teacher_id": ID_SCHEMA,
+        "semester": SEMESTER_SCHEMA,
+        "sort_by": {
+            "type": "string",
+        }
+    },
+    "required": ["current_page", "page_size", "course_id"]
+}
+
+INTERACT_REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "review_id": ID_SCHEMA,
+        "action": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1,
+        },
+    },
+    "required": ["review_id", "action"],
 }
