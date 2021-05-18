@@ -40,7 +40,7 @@ def add_review(request, data):
 def get_latest_reviews(request, data):
 	offset = data["offset"]
 	size = data["size"]
-	reviews = review_manager.get_latest_reviews(offset, size, user_id)
+	reviews = review_manager.get_latest_reviews(offset, size)
 	return Result.SUCCESS, {
 		"reviews": reviews
 	}
