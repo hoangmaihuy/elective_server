@@ -81,3 +81,16 @@ GET_COURSE_REVIEWS_SCHEMA = {
     },
     "required": ["current_page", "page_size", "course_id"]
 }
+
+INTERACT_REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "review_id": ID_SCHEMA,
+        "action": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1,
+        },
+    },
+    "required": ["review_id", "action"],
+}

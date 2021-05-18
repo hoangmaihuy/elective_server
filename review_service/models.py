@@ -23,3 +23,18 @@ class Review(models.Model):
             models.Index(fields=['teacher_id'], name='review_teacher_id_idx'),
             models.Index(fields=['create_time'], name='review_create_time'),
         ]
+
+
+class ReviewInteract(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    review_id = models.PositiveBigIntegerField()
+    action = models.PositiveSmallIntegerField()
+    create_by = models.PositiveBigIntegerField()
+    create_time = models.PositiveBigIntegerField()
+
+    class Meta:
+        db_table = 'review_interact_tab'
+        indexes = [
+            models.Index(fields=['review_id', 'action'], name='ri_review_id_action_idx'),
+            models.Index(fields=['create_by'], name='ri_create_by_idx'),
+        ]

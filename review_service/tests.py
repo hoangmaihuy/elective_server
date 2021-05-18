@@ -52,5 +52,10 @@ class TestReview(SimpleTestCase):
 			"semester": TEST_SEMESTER,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
-		print(reply)
 
+	def test_interact_review(self):
+		result, reply = request_api(ReviewServiceApi.INTERACT_REVIEW, data={
+			"review_id": TEST_REVIEW_ID,
+			"action": ReviewInteraction.LIKE
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)
