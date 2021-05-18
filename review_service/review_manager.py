@@ -43,6 +43,11 @@ def get_latest_reviews(offset, size):
 		"recommend_score", "work_score", "content_score", "exam_score", "create_time"
 	))
 
+	reviews = add_review_extra_infos(reviews)
+	return reviews
+
+
+def add_review_extra_infos(reviews):
 	course_ids = [review["course_id"] for review in reviews]
 	course_infos = course_manager.get_course_infos_by_ids(course_ids)
 	course_infos_dict = {
@@ -67,3 +72,22 @@ def get_latest_reviews(offset, size):
 		review["semester"] = class_infos_dict[review["class_id"]]["semester"]
 
 	return reviews
+
+
+def get_course_reviews(course_id, offset, limit, sorted_by, teacher_id=None, class_ids=None):
+	qs = Review.objects.filter(course_id=course_id)
+	if teacher_id:
+		qs = qs.filter(teacher_id=teacher_id)
+	if class_ids:
+		qs = qs.filter(class_id__in=class_ids)
+	if sorted_by:
+		qs = qs.order_by(sorted_by)
+	total = qs.count()
+	qs = qs[offset:offset+limit]
+	reviews = list(qs.values(
+		"id", "title", "content", "course_id", "teacher_id", "class_id",
+		"recommend_score", "content_score", "work_score", "exam_score", "create_time"
+	))
+
+	reviews = add_review_extra_infos(reviews)
+	return total, reviews

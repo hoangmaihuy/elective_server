@@ -44,3 +44,25 @@ def get_latest_reviews(request, data):
     return Result.SUCCESS, {
         "reviews": reviews
     }
+
+
+@parse_request(method="POST", schema=GET_COURSE_REVIEWS_SCHEMA, login_required=True)
+def get_course_reviews(request, data):
+    course_id = data["course_id"]
+    current_page = data["current_page"]
+    page_size = data["page_size"]
+    offset = (current_page - 1) * page_size
+    teacher_id = data.get("teacher_id")
+    semester = data.get("semester")
+    if semester and not is_valid_semester(semester):
+        return Result.ERROR_PARAMS, None
+    class_ids = None
+    if semester:
+        class_ids = course_manager.get_class_ids_by_semester(course_id, semester)
+    sorted_by = data.get("sorted_by", "-create_time")
+
+    total, reviews = review_manager.get_course_reviews(course_id, offset, page_size, sorted_by, teacher_id, class_ids)
+    return Result.SUCCESS, {
+        "total": total,
+        "reviews": reviews
+    }

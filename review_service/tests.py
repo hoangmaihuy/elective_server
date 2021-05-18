@@ -43,3 +43,14 @@ class TestReview(SimpleTestCase):
 			"size": 10,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+
+	def test_get_course_reviews(self):
+		result, reply = request_api(ReviewServiceApi.GET_COURSE_REVIEWS, data={
+			"course_id": TEST_COURSE_ID,
+			"current_page": 1,
+			"page_size": 10,
+			"semester": TEST_SEMESTER,
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)
+		print(reply)
+

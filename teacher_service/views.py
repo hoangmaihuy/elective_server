@@ -14,7 +14,6 @@ def get_teacher_list(request, data):
 def get_teachers_by_course(request, data):
 	course_id = data["course_id"]
 	teachers = teacher_manager.get_teachers_by_course(course_id)
-	print(teachers)
 	return Result.SUCCESS, {
 		"teachers": teachers
 	}
