@@ -1,27 +1,14 @@
 from django.test import SimpleTestCase
-from test_common.request import request_api
-from common.consts import *
+from test_common.request import request_api, login_test_user
+from test_common.validator import validate_reply
+from test_common.consts import *
 from review_service.consts import *
-from account_service.consts import *
+from review_service.schemas import *
 
 
 class TestReview(SimpleTestCase):
 	def setUp(self) -> None:
-		self._token = self._login_test_user()
-
-	def _login_test_user(self):
-		result, reply = request_api(AccountServiceApi.REQUEST_VERIFICATION_CODE, data={
-			"email": TEST_EMAIL
-		})
-
-		self.assertEqual(result, Result.SUCCESS)
-		result, reply = request_api(AccountServiceApi.LOGIN, data={
-			"email": TEST_EMAIL,
-			"verification_code": TEST_VERIFICATION_CODE
-		})
-		self.assertEqual(result, Result.SUCCESS)
-		token = reply["access_token"]
-		return token
+		self._token = login_test_user()
 
 	def test_add_review(self):
 		result, _ = request_api(ReviewServiceApi.ADD_REVIEW, data={
@@ -43,6 +30,11 @@ class TestReview(SimpleTestCase):
 			"size": 10,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_LATEST_REVIEWS_REPLY_SCHEMA))
+		# Make sure reviews are sorted by time
+		reviews = reply["reviews"]
+		for i in range(len(reviews)-1):
+			self.assertTrue(reviews[i]["create_time"] >= reviews[i+1]["create_time"])
 
 	def test_get_course_reviews(self):
 		result, reply = request_api(ReviewServiceApi.GET_COURSE_REVIEWS, data={
@@ -52,6 +44,10 @@ class TestReview(SimpleTestCase):
 			"semester": TEST_SEMESTER,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_COURSE_REVIEWS_REPLY_SCHEMA))
+		# Check if all reviews belong to requested course
+		for review in reply["reviews"]:
+			self.assertEqual(review["course_id"], TEST_COURSE_ID)
 
 	def test_interact_review(self):
 		result, reply = request_api(ReviewServiceApi.INTERACT_REVIEW, data={

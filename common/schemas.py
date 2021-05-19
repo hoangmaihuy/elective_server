@@ -56,3 +56,9 @@ UINT_SCHEMA = {
 	"type": "integer",
 	"minimum": 0,
 }
+
+INTERACTION_SCHEMA = {
+	"type": "integer",
+	"minimum": -1,
+	"maximum": 1,
+}
