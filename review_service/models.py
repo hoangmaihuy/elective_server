@@ -28,7 +28,7 @@ class Review(models.Model):
 class ReviewInteract(models.Model):
     id = models.BigAutoField(primary_key=True)
     review_id = models.PositiveBigIntegerField()
-    action = models.PositiveSmallIntegerField()
+    action = models.SmallIntegerField()
     create_by = models.PositiveBigIntegerField()
     create_time = models.PositiveBigIntegerField()
 

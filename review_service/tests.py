@@ -59,3 +59,9 @@ class TestReview(SimpleTestCase):
 			"action": ReviewInteraction.LIKE
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+
+		result, reply = request_api(ReviewServiceApi.INTERACT_REVIEW, data={
+			"review_id": TEST_REVIEW_ID,
+			"action": ReviewInteraction.DISLIKE
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)

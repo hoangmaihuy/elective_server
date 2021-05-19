@@ -36,18 +36,18 @@ def create_review(course_id, teacher_id, class_id, title, content, score, create
 
 
 @cache_func(prefix=GET_LATEST_REVIEWS_CACHE_PREFIX, timeout=GET_LATEST_REVIEWS_CACHE_TIMEOUT)
-def get_latest_reviews(offset, size):
+def get_latest_reviews(offset, size, user_id):
 	qs = Review.objects.all().order_by("-create_time")[offset:offset+size]
 	reviews = list(qs.values(
 		"id", "title", "content", "course_id", "class_id", "teacher_id",
 		"recommend_score", "work_score", "content_score", "exam_score", "create_time"
 	))
 
-	reviews = add_review_extra_infos(reviews)
+	reviews = add_review_extra_infos(reviews, user_id)
 	return reviews
 
 
-def add_review_extra_infos(reviews):
+def add_review_extra_infos(reviews, user_id):
 	course_ids = [review["course_id"] for review in reviews]
 	course_infos = course_manager.get_course_infos_by_ids(course_ids)
 	course_infos_dict = {
@@ -70,11 +70,17 @@ def add_review_extra_infos(reviews):
 	interact_infos_dict = get_review_interacts(review_ids)
 
 	for review in reviews:
+		review_id = review["id"]
 		review["teacher_name"] = teacher_infos_dict[review["teacher_id"]]["name"]
 		review["course_name"] = course_infos_dict[review["course_id"]]["name"]
 		review["semester"] = class_infos_dict[review["class_id"]]["semester"]
-		review["likes"] = interact_infos_dict[review["id"]]["likes"]
-		review["dislikes"] = interact_infos_dict[review["id"]]["dislikes"]
+		review["likes"] = len(interact_infos_dict[review_id]["likes"])
+		review["dislikes"] = len(interact_infos_dict[review_id]["dislikes"])
+		review["interaction"] = ReviewInteraction.NO_INTERACTION
+		if user_id in interact_infos_dict[review_id]["likes"]:
+			review["interaction"] = ReviewInteraction.LIKE
+		elif user_id in interact_infos_dict[review_id]["dislikes"]:
+			review["interaction"] = ReviewInteraction.DISLIKE
 
 	return reviews
 
@@ -84,14 +90,14 @@ def get_review_interacts(review_ids):
 	interact_dict = {}
 	for review_id in review_ids:
 		interact_dict[review_id] = {
-			"likes": [],
-			"dislikes": [],
+			"likes": set(),
+			"dislikes": set(),
 		}
 	for item in interacts:
 		if item["action"] == ReviewInteraction.LIKE:
-			interact_dict[item["review_id"]]["likes"].append(item["create_by"])
-		else:
-			interact_dict[item["review_id"]]["dislikes"].append(item["create_by"])
+			interact_dict[item["review_id"]]["likes"].add(item["create_by"])
+		elif item["action"] == ReviewInteraction.DISLIKE:
+			interact_dict[item["review_id"]]["dislikes"].add(item["create_by"])
 
 	return interact_dict
 
@@ -111,16 +117,16 @@ def get_course_reviews(course_id, offset, limit, sorted_by, teacher_id=None, cla
 		"recommend_score", "content_score", "work_score", "exam_score", "create_time"
 	))
 
-	reviews = add_review_extra_infos(reviews)
+	reviews = add_review_extra_infos(reviews, user_id)
 	return total, reviews
 
 
 def interact_review(review_id, action, user_id):
-	ReviewInteract.objects.get_or_create(
+	ReviewInteract.objects.update_or_create(
 		review_id=review_id,
-		action=action,
 		create_by=user_id,
-		create_time=TimeUtils.now_ts(),
+		defaults={
+			"action": action,
+			"create_time": TimeUtils.now_ts(),
+		}
 	)
-
-	ReviewInteract.objects.filter(review_id=review_id, action=1-action, create_by=user_id).delete()

@@ -15,7 +15,8 @@ class ReviewServiceApi:
 
 
 class ReviewInteraction:
-	DISLIKE = 0
+	DISLIKE = -1
+	NO_INTERACTION = 0
 	LIKE = 1
 
 
