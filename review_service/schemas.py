@@ -1,50 +1,22 @@
-ID_SCHEMA = {
-    "type": "integer",
-    "minimum": 1,
-}
+from common.schemas import *
 
-SCORE_SCHEMA = {
-    "type": "number",
-    "minimum": 1,
-    "maximum": 5,
-}
-
-SEMESTER_SCHEMA = {
-    "type": "string",
-    "minLength": 7,
-    "maxLength": 7,
-}
-
-ADD_REVIEW_SCHEMA = {
+ADD_REVIEW_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
-        "title": {
-            "type": "string"
-        },
-        "content": {
-            "type": "string"
-        },
+        "title": STRING_SCHEMA,
+        "content": STRING_SCHEMA,
         "course_id": ID_SCHEMA,
         "teacher_id": ID_SCHEMA,
-        "semester": {
-            "type": "string",
-            "minLength": 7,
-            "maxLength": 7,
-        },
+        "semester": SEMESTER_SCHEMA,
         "recommend_score": SCORE_SCHEMA,
         "work_score": SCORE_SCHEMA,
         "exam_score": SCORE_SCHEMA,
         "content_score": SCORE_SCHEMA,
-        "user_grade": {
-            "type": "number",
-            "minimum": 1,
-            "maximum": 100,
-        }
     },
     "required": ["course_id", "teacher_id", "semester", "recommend_score", "content_score", "work_score", "exam_score"],
 }
 
-GET_LATEST_REVIEWS_SCHEMA = {
+GET_LATEST_REVIEWS_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
         "offset": {
@@ -60,7 +32,47 @@ GET_LATEST_REVIEWS_SCHEMA = {
     "required": ["offset", "size"]
 }
 
-GET_COURSE_REVIEWS_SCHEMA = {
+REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "id": ID_SCHEMA,
+        "title": STRING_SCHEMA,
+        "content": STRING_SCHEMA,
+        "course_id": ID_SCHEMA,
+        "class_id": ID_SCHEMA,
+        "teacher_id": ID_SCHEMA,
+        "recommend_score": SCORE_SCHEMA,
+        "work_score": SCORE_SCHEMA,
+        "content_score": SCORE_SCHEMA,
+        "exam_score": SCORE_SCHEMA,
+        "create_time": UINT_SCHEMA,
+        "teacher_name": STRING_SCHEMA,
+        "course_name": STRING_SCHEMA,
+        "semester": SEMESTER_SCHEMA,
+        "likes": UINT_SCHEMA,
+        "dislikes": UINT_SCHEMA,
+        "interaction": INTERACTION_SCHEMA,
+    },
+    "required": [
+        "id", "title", "content", "course_id", "class_id", "teacher_id",
+        "recommend_score", "work_score", "content_score", "exam_score",
+        "create_time", "teacher_name", "course_name", "semester", "likes",
+        "dislikes", "interaction",
+    ]
+}
+
+GET_LATEST_REVIEWS_REPLY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "reviews": {
+            "type": "array",
+            "items": REVIEW_SCHEMA,
+        }
+    },
+    "required": ["reviews"]
+}
+
+GET_COURSE_REVIEWS_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
         "current_page": {
@@ -82,7 +94,18 @@ GET_COURSE_REVIEWS_SCHEMA = {
     "required": ["current_page", "page_size", "course_id"]
 }
 
-INTERACT_REVIEW_SCHEMA = {
+GET_COURSE_REVIEWS_REPLY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "reviews": {
+            "type": "array",
+            "items": REVIEW_SCHEMA,
+        }
+    },
+    "required": ["reviews"]
+}
+
+INTERACT_REVIEW_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
         "review_id": ID_SCHEMA,

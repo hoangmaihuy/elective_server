@@ -7,7 +7,7 @@ from review_service import review_manager
 from course_service import course_manager
 
 
-@parse_request(method="POST", schema=ADD_REVIEW_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=ADD_REVIEW_REQUEST_SCHEMA, login_required=True)
 def add_review(request, data):
 	course_id = data["course_id"]
 	teacher_id = data["teacher_id"]
@@ -36,7 +36,7 @@ def add_review(request, data):
 	return Result.SUCCESS, None
 
 
-@parse_request(method="POST", schema=GET_LATEST_REVIEWS_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=GET_LATEST_REVIEWS_REQUEST_SCHEMA, login_required=True)
 def get_latest_reviews(request, data):
 	user_id = data["__auth_info"]["user_id"]
 	offset = data["offset"]
@@ -47,7 +47,7 @@ def get_latest_reviews(request, data):
 	}
 
 
-@parse_request(method="POST", schema=GET_COURSE_REVIEWS_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=GET_COURSE_REVIEWS_REQUEST_SCHEMA, login_required=True)
 def get_course_reviews(request, data):
 	user_id = data["__auth_info"]["user_id"]
 	course_id = data["course_id"]
@@ -70,7 +70,7 @@ def get_course_reviews(request, data):
 	}
 
 
-@parse_request(method="POST", schema=INTERACT_REVIEW_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=INTERACT_REVIEW_REQUEST_SCHEMA, login_required=True)
 def interact_review(request, data):
 	user_id = data["__auth_info"]["user_id"]
 	review_id = data["review_id"]

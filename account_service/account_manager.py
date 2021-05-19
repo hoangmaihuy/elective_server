@@ -4,6 +4,7 @@ from common.utils import TimeUtils
 from common.crypto import encode_jwt
 from account_service.consts import *
 from account_service.models import User
+from test_common.consts import TEST_EMAIL, TEST_VERIFICATION_CODE
 
 
 @cache_func(prefix=VERIFICATION_CODE_CACHE_PREFIX, timeout=VERIFICATION_CODE_CACHE_TIMEOUT)

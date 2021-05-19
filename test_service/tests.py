@@ -1,5 +1,5 @@
 from django.test import SimpleTestCase
-from common.utils import request_api
+from test_common.request import request_api
 from common.consts import Result
 from test_service.consts import Api as TestServiceApi
 

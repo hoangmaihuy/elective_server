@@ -1,27 +1,13 @@
 from django.test import SimpleTestCase
-from common.utils import request_api
-from common.consts import *
-from course_service.consts import *
-from account_service.consts import *
+from test_common.request import request_api, login_test_user
+from test_common.consts import *
+from test_common.validator import validate_reply
+from course_service.schemas import *
 
 
 class TestCourse(SimpleTestCase):
 	def setUp(self) -> None:
-		self._token = self._login_test_user()
-
-	def _login_test_user(self):
-		result, reply = request_api(AccountServiceApi.REQUEST_VERIFICATION_CODE, data={
-			"email": TEST_EMAIL
-		})
-
-		self.assertEqual(result, Result.SUCCESS)
-		result, reply = request_api(AccountServiceApi.LOGIN, data={
-			"email": TEST_EMAIL,
-			"verification_code": TEST_VERIFICATION_CODE
-		})
-		self.assertEqual(result, Result.SUCCESS)
-		token = reply["access_token"]
-		return token
+		self._token = login_test_user()
 
 	def test_get_course_list(self):
 		result, reply = request_api(CourseServiceApi.GET_COURSE_LIST, data={
@@ -29,10 +15,12 @@ class TestCourse(SimpleTestCase):
 			"page_size": 20,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_COURSE_LIST_REPLY_SCHEMA))
 
 	def test_get_courses_by_school(self):
 		result, reply = request_api(CourseServiceApi.GET_COURSES_BY_SCHOOL, method="GET", token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_COURSES_BY_SCHOOL_REPLY_SCHEMA))
 
 	def test_get_course_rank(self):
 		result, reply = request_api(CourseServiceApi.GET_COURSE_RANK, method="POST", data={
@@ -40,6 +28,11 @@ class TestCourse(SimpleTestCase):
 			"school_id": 2,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_COURSE_RANK_REPLY_SCHEMA))
+		# Make sure courses are sorted descending by score
+		courses = reply["courses"]
+		for i in range(len(courses)-1):
+			self.assertTrue(courses[i]["recommend_score"] >= courses[i+1]["recommend_score"])
 
 	def test_get_course_info(self):
 		result, reply = request_api(CourseServiceApi.GET_COURSE_INFO, method="POST", data={
@@ -48,6 +41,8 @@ class TestCourse(SimpleTestCase):
 		self.assertEqual(result, Result.ERROR_COURSE_NOT_FOUND)
 
 		result, reply = request_api(CourseServiceApi.GET_COURSE_INFO, method="POST", data={
-			"course_id": 1,
+			"course_id": TEST_COURSE_ID,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_COURSE_INFO_REPLY_SCHEMA))
+		self.assertEqual(reply["id"], TEST_COURSE_ID)

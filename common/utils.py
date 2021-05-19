@@ -1,6 +1,5 @@
 import jsonschema
-import requests
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.utils import timezone
 from common.consts import Result
 from common.crypto import decode_jwt
@@ -74,25 +73,6 @@ def parse_request(method, schema=None, login_required=False):
 		return inner
 
 	return outer
-
-
-# return result, reply
-def request_api(url, method="POST", headers=None, data=None, token=None):
-	if not headers:
-		headers = {}
-	if token:
-		headers["Authorization"] = "Bearer " + token
-	if method == "GET":
-		r = requests.get(url, headers=headers, params=data)
-	elif method == "POST":
-		r = requests.post(url, headers=headers, json=data)
-	else:
-		return Result.ERROR_BAD_REQUEST, None
-
-	if r.status_code != 200:
-		return r.status_code, None
-	resp_data = r.json()
-	return resp_data["result"], resp_data.get("reply")
 
 
 class TimeUtils:

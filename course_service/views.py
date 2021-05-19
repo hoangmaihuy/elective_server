@@ -5,7 +5,7 @@ from course_service.consts import *
 from course_service import course_manager
 
 
-@parse_request(method="POST", schema=GET_COURSE_LIST_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=GET_COURSE_LIST_REQUEST_SCHEMA, login_required=True)
 def get_course_list(request, data):
 	current_page = data["current_page"]
 	page_size = data["page_size"]
@@ -44,7 +44,7 @@ def get_courses_by_school(request, data):
 	return Result.SUCCESS, courses_by_school
 
 
-@parse_request(method="POST", schema=GET_COURSE_RANK_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=GET_COURSE_RANK_REQUEST_SCHEMA, login_required=True)
 def get_course_rank(request, data):
 	course_type = data["course_type"]
 	if course_type not in CourseTypeEnum.values() or course_type % 100 != 0:
@@ -61,7 +61,7 @@ def get_course_rank(request, data):
 	}
 
 
-@parse_request(method="POST", schema=GET_COURSE_INFO_SCHEMA, login_required=True)
+@parse_request(method="POST", schema=GET_COURSE_INFO_REQUEST_SCHEMA, login_required=True)
 def get_course_info(request, data):
 	course_id = data["course_id"]
 	course_info = course_manager.get_course_info(course_id)
