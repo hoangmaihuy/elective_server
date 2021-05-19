@@ -38,9 +38,10 @@ def add_review(request, data):
 
 @parse_request(method="POST", schema=GET_LATEST_REVIEWS_SCHEMA, login_required=True)
 def get_latest_reviews(request, data):
+	user_id = data["__auth_info"]["user_id"]
 	offset = data["offset"]
 	size = data["size"]
-	reviews = review_manager.get_latest_reviews(offset, size)
+	reviews = review_manager.get_latest_reviews(offset, size, user_id)
 	return Result.SUCCESS, {
 		"reviews": reviews
 	}
@@ -48,6 +49,7 @@ def get_latest_reviews(request, data):
 
 @parse_request(method="POST", schema=GET_COURSE_REVIEWS_SCHEMA, login_required=True)
 def get_course_reviews(request, data):
+	user_id = data["__auth_info"]["user_id"]
 	course_id = data["course_id"]
 	current_page = data["current_page"]
 	page_size = data["page_size"]
@@ -61,7 +63,7 @@ def get_course_reviews(request, data):
 		class_ids = course_manager.get_class_ids_by_semester(course_id, semester)
 	sorted_by = data.get("sorted_by", "-create_time")
 
-	total, reviews = review_manager.get_course_reviews(course_id, offset, page_size, sorted_by, teacher_id, class_ids)
+	total, reviews = review_manager.get_course_reviews(course_id, offset, page_size, sorted_by, teacher_id, class_ids, user_id)
 	return Result.SUCCESS, {
 		"total": total,
 		"reviews": reviews

@@ -88,7 +88,7 @@ INTERACT_REVIEW_SCHEMA = {
         "review_id": ID_SCHEMA,
         "action": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": -1,
             "maximum": 1,
         },
     },
