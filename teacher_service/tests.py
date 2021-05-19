@@ -1,6 +1,8 @@
 from django.test import SimpleTestCase
 from test_common.consts import *
 from test_common.request import request_api, login_test_user
+from test_common.validator import validate_reply
+from teacher_service.schemas import *
 
 
 class TestCourse(SimpleTestCase):
@@ -16,3 +18,4 @@ class TestCourse(SimpleTestCase):
 			"course_id": TEST_COURSE_ID,
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_TEACHERS_BY_COURSE_REPLY_SCHEMA))

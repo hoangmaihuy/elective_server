@@ -62,3 +62,9 @@ INTERACTION_SCHEMA = {
 	"minimum": -1,
 	"maximum": 1,
 }
+
+TEACHER_NAME_SCHEMA = {
+	"type": "string",
+	"minLength": 1,
+	"maxLength": 50,
+}
