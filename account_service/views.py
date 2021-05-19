@@ -6,7 +6,7 @@ from common.validator import is_pku_mail
 from tuike_consumer.tasks import send_verification_code
 
 
-@parse_request(method="POST", schema=REQUEST_VERIFICATION_CODE_SCHEMA)
+@parse_request(method="POST", schema=REQUEST_VERIFICATION_CODE_REQUEST_SCHEMA)
 def request_verification_code(request, data):
 	email = data["email"]
 
@@ -18,7 +18,7 @@ def request_verification_code(request, data):
 	return Result.SUCCESS, None
 
 
-@parse_request(method="POST", schema=LOGIN_SCHEMA)
+@parse_request(method="POST", schema=LOGIN_REQUEST_SCHEMA)
 def login(request, data):
 	email = data["email"]
 	verification_code = data["verification_code"]

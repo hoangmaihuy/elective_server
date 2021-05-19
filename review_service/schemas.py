@@ -1,19 +1,4 @@
-ID_SCHEMA = {
-    "type": "integer",
-    "minimum": 1,
-}
-
-SCORE_SCHEMA = {
-    "type": "number",
-    "minimum": 1,
-    "maximum": 5,
-}
-
-SEMESTER_SCHEMA = {
-    "type": "string",
-    "minLength": 7,
-    "maxLength": 7,
-}
+from common.schemas import *
 
 ADD_REVIEW_SCHEMA = {
     "type": "object",
