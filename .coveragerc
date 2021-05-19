@@ -1,0 +1,20 @@
+[run]
+omit =
+    */site-packages/*
+    scripts
+    course_data
+    .github
+    */migrations/*
+    */tests.py
+    */consts.py
+    */urls.py
+    */settings.py
+    */schemas.py
+    */wsgi.py
+    */asgi.py
+    */apps.py
+    */__init__.py
+    */admin.py
+    test_service
+    test_common
+

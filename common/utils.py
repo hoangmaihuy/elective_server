@@ -48,10 +48,11 @@ def parse_request(method, schema=None, login_required=False):
 				try:
 					token = auth.split()[1]
 					auth_info = decode_jwt(token)
+					if not auth_info:
+						return make_response(Result.ERROR_AUTHORIZATION)
 					data["__auth_info"] = auth_info
 				except Exception:
 					return make_response(Result.ERROR_AUTHORIZATION)
-
 
 			if method == "POST":
 				_data = request.body
