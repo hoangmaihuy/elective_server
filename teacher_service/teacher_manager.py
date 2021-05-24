@@ -21,6 +21,10 @@ def get_teacher_infos_by_ids(teacher_ids):
 	return list(Teacher.objects.filter(id__in=teacher_ids).values("id", "name"))
 
 
+def get_teacher_info_by_id(teacher_id):
+	return Teacher.objects.filter(id=teacher_id).values().first()
+
+
 def update_teacher_score(teacher_id, score):
 	t = Teacher.objects.filter(id=teacher_id).first()
 	if not t:
