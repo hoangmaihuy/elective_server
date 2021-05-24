@@ -64,6 +64,7 @@ REVIEW_SCHEMA = {
 GET_LATEST_REVIEWS_REPLY_SCHEMA = {
     "type": "object",
     "properties": {
+        "total": UINT_SCHEMA,
         "reviews": {
             "type": "array",
             "items": REVIEW_SCHEMA,
@@ -97,6 +98,7 @@ GET_COURSE_REVIEWS_REQUEST_SCHEMA = {
 GET_COURSE_REVIEWS_REPLY_SCHEMA = {
     "type": "object",
     "properties": {
+        "total": UINT_SCHEMA,
         "reviews": {
             "type": "array",
             "items": REVIEW_SCHEMA,
@@ -116,4 +118,32 @@ INTERACT_REVIEW_REQUEST_SCHEMA = {
         },
     },
     "required": ["review_id", "action"],
+}
+GET_TEACHER_REVIEWS_REQUEST_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "current_page": {
+            "type": "integer",
+            "minimum": 1,
+        },
+        "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+        },
+        "teacher_id": ID_SCHEMA,
+    },
+    "required": ["current_page", "page_size", "teacher_id"],
+}
+
+GET_TEACHER_REVIEWS_REPLY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "total": UINT_SCHEMA,
+        "reviews": {
+            "type": "array",
+            "items": REVIEW_SCHEMA,
+        }
+    },
+    "required": ["total", "reviews"]
 }

@@ -23,12 +23,14 @@ class ReviewServiceApi:
 	ADD_REVIEW = REVIEW_SERVICE_API + "/add_review"
 	GET_LATEST_REVIEWS = REVIEW_SERVICE_API + "/get_latest_reviews"
 	GET_COURSE_REVIEWS = REVIEW_SERVICE_API + "/get_course_reviews"
+	GET_TEACHER_REVIEWS = REVIEW_SERVICE_API + "/get_teacher_reviews"
 	INTERACT_REVIEW = REVIEW_SERVICE_API + "/interact_review"
 
 
 class TeacherServiceApi:
 	GET_TEACHER_LIST = TEACHER_SERVICE_API + "/get_teacher_list"
 	GET_TEACHERS_BY_COURSE = TEACHER_SERVICE_API + "/get_teachers_by_course"
+	GET_TEACHER_INFO = TEACHER_SERVICE_API + "/get_teacher_info"
 
 
 class Result:
@@ -41,3 +43,4 @@ class Result:
 	ERROR_AUTHORIZATION = "error_authorization"
 	ERROR_CLASS_NOT_EXIST = "error_class_not_exist"
 	ERROR_COURSE_NOT_FOUND = "error_course_not_found"
+	ERROR_TEACHER_NOT_FOUND = "error_teacher_not_found"

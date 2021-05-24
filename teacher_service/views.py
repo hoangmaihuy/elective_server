@@ -17,3 +17,12 @@ def get_teachers_by_course(request, data):
 	return Result.SUCCESS, {
 		"teachers": teachers
 	}
+
+
+@parse_request(method="POST", schema=GET_TEACHER_INFO_REQUEST_SCHEMA, login_required=True)
+def get_teacher_info(request, data):
+	teacher_id = data["teacher_id"]
+	teacher_info = teacher_manager.get_teacher_info_by_id(teacher_id)
+	if not teacher_info:
+		return Result.ERROR_TEACHER_NOT_FOUND, None
+	return Result.SUCCESS, teacher_info

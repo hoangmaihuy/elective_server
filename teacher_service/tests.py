@@ -19,3 +19,10 @@ class TestCourse(SimpleTestCase):
 		}, token=self._token)
 		self.assertEqual(result, Result.SUCCESS)
 		self.assertTrue(validate_reply(reply, GET_TEACHERS_BY_COURSE_REPLY_SCHEMA))
+
+	def test_get_teacher_info(self):
+		result, reply = request_api(TeacherServiceApi.GET_TEACHER_INFO, data={
+			"teacher_id": TEST_TEACHER_ID,
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_TEACHER_INFO_REPLY_SCHEMA))
