@@ -49,6 +49,18 @@ class TestReview(SimpleTestCase):
 		for review in reply["reviews"]:
 			self.assertEqual(review["course_id"], TEST_COURSE_ID)
 
+	def test_get_teacher_reviews(self):
+		result, reply = request_api(ReviewServiceApi.GET_TEACHER_REVIEWS, data={
+			"teacher_id": TEST_TEACHER_ID,
+			"current_page": 1,
+			"page_size": 10,
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, GET_TEACHER_REVIEWS_REPLY_SCHEMA))
+		# Check if all reviews belong to requested course
+		for review in reply["reviews"]:
+			self.assertEqual(review["teacher_id"], TEST_TEACHER_ID)
+
 	def test_interact_review(self):
 		result, reply = request_api(ReviewServiceApi.INTERACT_REVIEW, data={
 			"review_id": TEST_REVIEW_ID,

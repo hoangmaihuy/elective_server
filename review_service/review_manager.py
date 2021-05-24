@@ -121,6 +121,19 @@ def get_course_reviews(course_id, offset, limit, sorted_by, teacher_id=None, cla
 	return total, reviews
 
 
+def get_teacher_reviews(teacher_id, offset, limit, user_id=None):
+	qs = Review.objects.filter(teacher_id=teacher_id).order_by("-create_time")
+	total = qs.count()
+	qs = qs[offset:offset+limit]
+	reviews = list(qs.values(
+		"id", "title", "content", "course_id", "teacher_id", "class_id",
+		"recommend_score", "content_score", "work_score", "exam_score", "create_time"
+	))
+
+	reviews = add_review_extra_infos(reviews, user_id)
+	return total, reviews
+
+
 def interact_review(review_id, action, user_id):
 	ReviewInteract.objects.update_or_create(
 		review_id=review_id,

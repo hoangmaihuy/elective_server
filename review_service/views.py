@@ -70,6 +70,22 @@ def get_course_reviews(request, data):
 	}
 
 
+@parse_request(method="POST", schema=GET_TEACHER_REVIEWS_REQUEST_SCHEMA, login_required=True)
+def get_teacher_reviews(request, data):
+	user_id = data["__auth_info"]["user_id"]
+	teacher_id = data["teacher_id"]
+	current_page = data["current_page"]
+	page_size = data["page_size"]
+	offset = (current_page - 1) * page_size
+
+	total, reviews = review_manager.get_teacher_reviews(teacher_id, offset, page_size, user_id)
+
+	return Result.SUCCESS, {
+		"total": total,
+		"reviews": reviews
+	}
+
+
 @parse_request(method="POST", schema=INTERACT_REVIEW_REQUEST_SCHEMA, login_required=True)
 def interact_review(request, data):
 	user_id = data["__auth_info"]["user_id"]
