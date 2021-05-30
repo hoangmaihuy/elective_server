@@ -41,8 +41,9 @@ def get_latest_reviews(request, data):
 	user_id = data["__auth_info"]["user_id"]
 	offset = data["offset"]
 	size = data["size"]
-	reviews = review_manager.get_latest_reviews(offset, size, user_id)
+	total, reviews = review_manager.get_latest_reviews(offset, size, user_id)
 	return Result.SUCCESS, {
+		"total": total,
 		"reviews": reviews
 	}
 
