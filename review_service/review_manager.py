@@ -37,6 +37,7 @@ def create_review(course_id, teacher_id, class_id, title, content, score, create
 
 @cache_func(prefix=GET_LATEST_REVIEWS_CACHE_PREFIX, timeout=GET_LATEST_REVIEWS_CACHE_TIMEOUT)
 def get_latest_reviews(offset, size, user_id):
+	total = Review.objects.all().count()
 	qs = Review.objects.all().order_by("-create_time")[offset:offset+size]
 	reviews = list(qs.values(
 		"id", "title", "content", "course_id", "class_id", "teacher_id",
@@ -44,7 +45,7 @@ def get_latest_reviews(offset, size, user_id):
 	))
 
 	reviews = add_review_extra_infos(reviews, user_id)
-	return reviews
+	return total, reviews
 
 
 def add_review_extra_infos(reviews, user_id):
