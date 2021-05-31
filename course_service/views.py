@@ -47,7 +47,7 @@ def get_courses_by_school(request, data):
 @parse_request(method="POST", schema=GET_COURSE_RANK_REQUEST_SCHEMA, login_required=True)
 def get_course_rank(request, data):
 	course_type = data["course_type"]
-	if course_type not in CourseTypeEnum.values() or course_type % 100 != 0:
+	if course_type not in CourseTypeEnum.values():
 		return Result.ERROR_PARAMS, None
 
 	school_id = data.get("school_id")
