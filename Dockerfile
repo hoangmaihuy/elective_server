@@ -4,10 +4,13 @@ FROM python:3.8-alpine
 # set work directory
 WORKDIR /app
 
+ARG ENVIRONMENT
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBUG 0
+ENV ENVIRONMENT $ENVIRONMENT
 
 RUN apk update \
     && apk add python3-dev musl-dev mariadb-dev gcc mariadb-connector-c-dev

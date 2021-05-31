@@ -35,13 +35,14 @@ elif ENVIROMENT == "TEST":
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "tuike-api-test.herokuapp.com"]
 elif ENVIROMENT == "LIVE":
     DEBUG = False
-    HOST = "https://tuike-api.herokuapp.com"
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "tuike-api.herokuapp.com"]
+    HOST = "http://47.97.40.237:3002"
+    ALLOWED_HOSTS = ['47.97.40.237']
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost',
     'https://localhost',
     'http://localhost:3000',
+    'http://47.97.40.237:3000',
     'http://tuike-test.herokuapp.com',
     'http://tuike.herokuapp.com',
     'https://tuike-test.herokuapp.com',
