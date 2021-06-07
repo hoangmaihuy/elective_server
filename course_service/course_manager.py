@@ -15,7 +15,7 @@ def get_courses_by_params(params, order_by=None, offset=0, limit=1):
 
 
 @cache_func(prefix=GET_COURSES_BY_SCHOOL_CACHE_PREFIX, timeout=GET_COURSES_BY_SCHOOL_CACHE_TIMEOUT)
-def get_courses_by_school():
+def get_courses_by_school(force_query=False):
 	courses = list(Course.objects.all().values("id", "name", "school_id", "course_no", "credit", "review_count"))
 	courses_by_school = {}
 	for course in courses:
@@ -25,7 +25,7 @@ def get_courses_by_school():
 
 
 @cache_func(prefix=GET_COURSE_RANK_CACHE_PREFIX, timeout=GET_COURSE_RANK_CACHE_TIMEOUT)
-def get_course_rank(course_type, school_id, rank_size):
+def get_course_rank(course_type, school_id, rank_size, force_query=False):
 	if course_type % 100 == 0:
 		qs = Course.objects.filter(type__range=(course_type, course_type+99))
 	else:
@@ -39,7 +39,7 @@ def get_course_rank(course_type, school_id, rank_size):
 
 
 @cache_func(prefix=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_PREFIX, timeout=GET_TEACHER_IDS_BY_COURSE_ID_CACHE_TIMEOUT)
-def get_teacher_ids_by_course_id(course_id):
+def get_teacher_ids_by_course_id(course_id, force_query=False):
 	return list(Class.objects.filter(course_id=course_id).values_list("teacher_id", flat=True))
 
 
