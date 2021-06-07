@@ -14,4 +14,4 @@ omit=
     */models.py
     */admin.py
     */tests.py
-    tuike_api
+    tuike_api/*

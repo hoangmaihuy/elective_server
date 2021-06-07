@@ -103,7 +103,7 @@ class TestReviewManager(TestCase):
 		self.assertEqual(interact.action, ReviewInteraction.LIKE)
 
 
-class TestReview(SimpleTestCase):
+class TestReviewApi(SimpleTestCase):
 	def setUp(self) -> None:
 		self._token = login_test_user()
 

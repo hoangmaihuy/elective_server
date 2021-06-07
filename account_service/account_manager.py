@@ -8,7 +8,7 @@ from test_common.consts import TEST_EMAIL, TEST_VERIFICATION_CODE
 
 
 @cache_func(prefix=VERIFICATION_CODE_CACHE_PREFIX, timeout=VERIFICATION_CODE_CACHE_TIMEOUT)
-def generate_verification_code(email):
+def generate_verification_code(email, force_query=False):
     if email == TEST_EMAIL:
         auth_code = TEST_VERIFICATION_CODE
     else:
@@ -47,5 +47,5 @@ def get_or_create_user_by_email(email):
 
 
 @cache_func(prefix=GET_USER_BY_ID_CACHE_PREFIX, timeout=GET_USER_BY_ID_CACHE_TIMEOUT)
-def get_user_by_id(user_id):
+def get_user_by_id(user_id, force_query=False):
     return User.objects.get(id=user_id)

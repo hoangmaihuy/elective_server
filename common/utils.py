@@ -36,7 +36,7 @@ def make_response(result, reply=None):
 
 def parse_request(method, schema=None, login_required=False):
 	def outer(func):
-		@wraps(func)
+		#@wraps(func)
 		def inner(request, *args, **kwargs):
 			if request.method != method:
 				return make_response(Result.ERROR_BAD_REQUEST)

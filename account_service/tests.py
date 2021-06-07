@@ -6,6 +6,7 @@ from test_common.consts import *
 from account_service.schemas import *
 from account_service import account_manager
 from account_service.models import User
+from common.crypto import encode_jwt, decode_jwt
 
 
 class TestAccountManager(TestCase):
@@ -20,9 +21,9 @@ class TestAccountManager(TestCase):
 		)
 
 	def test_generate_verification_code(self):
-		code = account_manager.generate_verification_code(TEST_EMAIL)
+		code = account_manager.generate_verification_code(TEST_EMAIL, force_query=True)
 		self.assertEqual(code, TEST_VERIFICATION_CODE)
-		code = account_manager.generate_verification_code('hoangmaihuy@pku.edu.cn')
+		code = account_manager.generate_verification_code('hoangmaihuy@pku.edu.cn', force_query=True)
 		self.assertTrue(len(code), 6)
 
 	def test_get_verification_code_by_email(self):
@@ -31,12 +32,18 @@ class TestAccountManager(TestCase):
 		code = account_manager.get_verification_code_by_email("test@gmail.com")
 		self.assertEqual(code, None)
 
+	def test_generate_token(self):
+		token = account_manager.generate_token(self.test_user)
+		info = decode_jwt(token)
+		self.assertEqual(info["user_id"], self.test_user.id)
+		self.assertEqual(info["email"], self.test_user.email)
+
 	def test_get_or_create_user_by_email(self):
 		user = account_manager.get_or_create_user_by_email(TEST_EMAIL)
 		self.assertEqual(user.email, TEST_EMAIL)
 
 	def test_get_user_by_id(self):
-		user = account_manager.get_user_by_id(self.test_user.id)
+		user = account_manager.get_user_by_id(self.test_user.id, force_query=True)
 		self.assertEqual(user.id, self.test_user.id)
 
 

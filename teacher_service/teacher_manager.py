@@ -6,12 +6,12 @@ from teacher_service.consts import *
 
 
 @cache_func(prefix=GET_TEACHER_NAMES_CACHE_PREFIX, timeout=GET_TEACHER_NAMES_CACHE_TIMEOUT)
-def get_teacher_names():
+def get_teacher_names(force_query=False):
 	return list(Teacher.objects.all().values("id", "name"))
 
 
 @cache_func(prefix=GET_TEACHERS_BY_COURSE_CACHE_PREFIX, timeout=GET_TEACHERS_BY_COURSE_CACHE_TIMEOUT)
-def get_teachers_by_course(course_id):
+def get_teachers_by_course(course_id, force_query=False):
 	teacher_ids = course_manager.get_teacher_ids_by_course_id(course_id)
 	teachers = list(Teacher.objects.filter(id__in=teacher_ids).values("id", "name"))
 	return teachers
