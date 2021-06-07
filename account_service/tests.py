@@ -1,11 +1,46 @@
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
 from common.crypto import decode_jwt
 from test_common.request import request_api, login_test_user
 from test_common.validator import validate_reply
 from test_common.consts import *
 from account_service.schemas import *
+from account_service import account_manager
+from account_service.models import User
 
-class TestAccount(SimpleTestCase):
+
+class TestAccountManager(TestCase):
+
+	def setUp(self):
+		self.test_user = User.objects.create(
+			is_staff=False,
+			is_superuser=False,
+			email=TEST_EMAIL,
+			last_login=0,
+			create_time=0
+		)
+
+	def test_generate_verification_code(self):
+		code = account_manager.generate_verification_code(TEST_EMAIL)
+		self.assertEqual(code, TEST_VERIFICATION_CODE)
+		code = account_manager.generate_verification_code('hoangmaihuy@pku.edu.cn')
+		self.assertTrue(len(code), 6)
+
+	def test_get_verification_code_by_email(self):
+		code = account_manager.get_verification_code_by_email(TEST_EMAIL)
+		self.assertEqual(code, TEST_VERIFICATION_CODE)
+		code = account_manager.get_verification_code_by_email("test@gmail.com")
+		self.assertEqual(code, None)
+
+	def test_get_or_create_user_by_email(self):
+		user = account_manager.get_or_create_user_by_email(TEST_EMAIL)
+		self.assertEqual(user.email, TEST_EMAIL)
+
+	def test_get_user_by_id(self):
+		user = account_manager.get_user_by_id(self.test_user.id)
+		self.assertEqual(user.id, self.test_user.id)
+
+
+class TestAccountApi(SimpleTestCase):
 	def setUp(self) -> None:
 		pass
 

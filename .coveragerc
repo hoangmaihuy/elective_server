@@ -1,0 +1,17 @@
+[run]
+source=
+    .
+omit=
+    venv/*
+    .github/*
+    course_data/*
+    scripts/*
+    tuike_consumer/*
+    */migrations/*
+    */__init__.py
+    */schemas.py
+    */consts.py
+    */models.py
+    */admin.py
+    */tests.py
+    tuike_api
