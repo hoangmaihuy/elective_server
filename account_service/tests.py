@@ -27,6 +27,8 @@ class TestAccountManager(TestCase):
 		self.assertTrue(len(code), 6)
 
 	def test_get_verification_code_by_email(self):
+		code = account_manager.generate_verification_code(TEST_EMAIL)
+		self.assertEqual(code, TEST_VERIFICATION_CODE)
 		code = account_manager.get_verification_code_by_email(TEST_EMAIL)
 		self.assertEqual(code, TEST_VERIFICATION_CODE)
 		code = account_manager.get_verification_code_by_email("test@gmail.com")
