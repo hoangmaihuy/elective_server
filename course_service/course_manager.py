@@ -24,6 +24,18 @@ def get_courses_by_school(force_query=False):
 	return courses_by_school
 
 
+def search_courses_by_name(course_name):
+	# convert course_name to regex: 高数 -> (高).*(数)
+	name_pattern = '.*'.join(['('+c+')' for c in course_name])
+	print(name_pattern)
+	courses = list(Course.objects.filter(name__regex=name_pattern).values("id", "name", "school_id", "course_no", "credit", "review_count"))
+	courses_by_school = {}
+	for course in courses:
+		school_courses = courses_by_school.setdefault(course["school_id"], [])
+		school_courses.append(course)
+	return courses_by_school
+
+
 @cache_func(prefix=GET_COURSE_RANK_CACHE_PREFIX, timeout=GET_COURSE_RANK_CACHE_TIMEOUT)
 def get_course_rank(course_type, school_id, rank_size, force_query=False):
 	if course_type % 100 == 0:

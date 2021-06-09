@@ -76,6 +76,24 @@ GET_COURSES_BY_SCHOOL_REPLY_SCHEMA = {
 	},
 }
 
+SEARCH_COURSES_BY_NAME_REQUEST_SCHEMA = {
+	"type": "object",
+	"properties": {
+		"course_name": COURSE_NAME_SCHEMA,
+	},
+	"required": ["course_name"]
+}
+
+SEARCH_COURSES_BY_NAME_REPLY_SCHEMA = {
+	"type": "object",
+	"patternProperties": {
+		"^\d{1,2}$": {
+			"type": "array",
+			"items": COURSE_BY_SCHOOL_ITEM_SCHEMA,
+		}
+	},
+}
+
 GET_COURSE_RANK_REQUEST_SCHEMA = {
 	"type": "object",
 	"properties": {

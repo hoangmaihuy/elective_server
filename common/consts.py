@@ -15,6 +15,7 @@ class AccountServiceApi:
 class CourseServiceApi:
 	GET_COURSE_LIST = COURSE_SERVICE_API + "/get_course_list"
 	GET_COURSES_BY_SCHOOL = COURSE_SERVICE_API + "/get_courses_by_school"
+	SEARCH_COURSES_BY_NAME = COURSE_SERVICE_API + "/search_courses_by_name"
 	GET_COURSE_RANK = COURSE_SERVICE_API + "/get_course_rank"
 	GET_COURSE_INFO = COURSE_SERVICE_API + "/get_course_info"
 

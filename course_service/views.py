@@ -44,6 +44,13 @@ def get_courses_by_school(request, data):
 	return Result.SUCCESS, courses_by_school
 
 
+@parse_request(method="POST", schema=SEARCH_COURSES_BY_NAME_REQUEST_SCHEMA, login_required=True)
+def search_courses_by_name(request, data):
+	course_name = data["course_name"]
+	courses_by_school = course_manager.search_courses_by_name(course_name)
+	return Result.SUCCESS, courses_by_school
+
+
 @parse_request(method="POST", schema=GET_COURSE_RANK_REQUEST_SCHEMA, login_required=True)
 def get_course_rank(request, data):
 	course_type = data["course_type"]

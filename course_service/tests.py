@@ -147,6 +147,13 @@ class TestCourseApi(SimpleTestCase):
 		self.assertEqual(result, Result.SUCCESS)
 		self.assertTrue(validate_reply(reply, GET_COURSES_BY_SCHOOL_REPLY_SCHEMA))
 
+	def test_search_courses_by_name(self):
+		result, reply = request_api(CourseServiceApi.SEARCH_COURSES_BY_NAME, method="POST", data={
+			"course_name": "高数",
+		}, token=self._token)
+		self.assertEqual(result, Result.SUCCESS)
+		self.assertTrue(validate_reply(reply, SEARCH_COURSES_BY_NAME_REPLY_SCHEMA))
+
 	def test_get_course_rank(self):
 		result, reply = request_api(CourseServiceApi.GET_COURSE_RANK, method="POST", data={
 			"course_type": 100,
